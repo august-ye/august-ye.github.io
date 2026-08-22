@@ -1,0 +1,27 @@
+All problem numbers are from the textbook, An Introduction to Optimization, 4th edition, by Edwin K. P. Chong and Stanislaw H. Zak, Wiley.
+
+Make sure to closely follow the homework preparation and submission policy here:
+https://math.gsu.edu/xye/course/hwpolicy.html
+
+The computer programming policy can be found here:
+https://math.gsu.edu/xye/course/coding.html
+
+Note: Submitted homework not following these policies above will not receive credits.
+
+Homework Assignment 1 (Due at 5:00 PM, Thursday, September 09, 2021 on iCollege)
+4.2, 5.3, 5.4, 5.10, 6.2, 6.4, 6.9, 6.25.
+
+Homework Assignment 2 (Due at 5:00 PM, Monday, September 20, 2021 on iCollege)
+6.10, 6.17, 6.21, 6.26, 6.29, 6.30, 7.10.
+
+Homework Assignment 3 (Due at 5:00 PM, Thursday, October 7, 2021 on iCollege)
+8.8, 8.10, 8.16, 8.25, 8.26.
+
+Homework Assignment 4 (Due at 5:00 PM, Monday, October 25, 2021 on iCollege)
+9.2, 9.4, 10.1, 10.3, 10.4, 10.7.
+
+Homework Assignment 5 (Due at 5:00 PM, Monday, November 8, 2021 on iCollege)
+10.11, 11.1, 11.2, 11.3, 11.5, 11.7, 15.2, 15.3, 15.5.
+
+Homework Assignment 6 (Due at 5:00 PM, Monday, November 29, 2021 on iCollege)
+20.6, 20.9, 20.13, 20.17, 20.20, 21.2, 21.6, 21.7, 21.12

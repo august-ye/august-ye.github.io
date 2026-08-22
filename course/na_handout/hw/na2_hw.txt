@@ -1,0 +1,33 @@
+Numerical Analysis II Exercise Problems
+
+Problem numbers refer to the textbook, Numerical Analysis, Burden, Faires and Burden, 10th edition. Brooks/Cole, Cengage Learning.
+
+Section 5.1: 1ac, 3bd, 9
+Section 5.2: 1ac, 3ac, 9, 11
+Section 5.3: 1ac, 9
+Section 5.4: 3ac, 7ac, 15ac, 27
+Section 5.5: 3ac, 5
+Section 5.6: 3ac, 9ac
+Section 5.7: 3ac
+Section 5.9: 3ac, 5, 7
+Section 5.10: 1, 5, 7
+
+Section 6.1: 3, 5ac, 9
+Section 6.2: 1ac, 3ac, 5ac
+Section 6.3: 3ac, 5ac, 9, 12, 13, 14, 16
+Section 6.4: 1a, 5, 7, 12, 14
+Section 6.5: 1a, 3a, 5
+Section 6.6: 3a, 5a, 11a, 17, 19
+
+Section 7.1: 5ac, 7ac, 9, 10
+Section 7.2: 1ace, 5ace, 7ace, 16, 17, 19, 20
+Section 7.3: 1ac, 3ac, 11, 18, 19
+Section 7.4: 1ac, 3ac
+Section 7.5: 1ac, 3ac
+Section 7.6: 1, 3, 5ac, 6ac, 16
+
+Section 11.1: 3ac, 7
+Section 11.2: 4ac, 5
+Section 11.3: 3ab, 6, 9, 10
+Section 11.4: 4ac, 5, 7
+Section 11.5: 3ac, 5ac, 6, 9, 12, 13
