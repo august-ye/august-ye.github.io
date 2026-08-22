@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ch08_web</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="introduction-to-statistics">Introduction to Statistics</h1>
+<p>Xiaojing Ye</p>
+<p>Department of Mathematics and Statistics</p>
+<p>Georgia State University</p>
+<hr />
+<h3 id="probability-theory-and-data">Probability Theory and Data</h3>
+<p>Probability theory underpins randomness. In real-life, we need data
+to understand probability distributions.</p>
+<p><img src="./figs/ch08/fig8-1.png" alt="population and samples" width="600"></p>
+<hr />
+<h2 id="sample-and-statistic">Sample and Statistic</h2>
+<p>Let <span class="math inline">\(p\)</span> be a pmf/pdf. We call
+<span class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+p\)</span> a <strong>sample</strong> of <span
+class="math inline">\(p\)</span>.</p>
+<ul>
+<li><span class="math inline">\(p\)</span> is often called
+<strong>population</strong> when samples are involved.</li>
+<li>iid = <strong>independent and identically distributed</strong>.</li>
+<li><span class="math inline">\(n\)</span> is called the <strong>sample
+size</strong>.</li>
+<li>A function of <span class="math inline">\((X_1,\dots,X_n)\)</span>
+is called a <strong>statistic</strong>.</li>
+</ul>
+<p>We can use the values of some specific statistics to describe <span
+class="math inline">\(p\)</span>.</p>
+<!-- We will introduce the following concepts and how to estimate them using a sample:
+
+| | **median** | **mean** | **standard deviation** | **variance** |
+|:---:|:---:|:---:|:---:|:---:|
+| **Population $p$** | $M$ | $\mu$ | $\sigma$ | $\sigma^2$ |
+| **Sample** | $\widehat{M}$ | $\hat{\mu}$ | $s$ | $s^2$ | -->
+<hr />
+<h3 id="definition">Definition</h3>
+<p>Let <span class="math inline">\(F\)</span> be the cumulative
+distribution function (cdf) of a population (pmf or pdf) <span
+class="math inline">\(p\)</span>. The <strong>median</strong> of <span
+class="math inline">\(p\)</span> is a number <span
+class="math inline">\(M\)</span> such that <span class="math display">\[
+P(x &lt; M) \le \frac{1}{2} \quad \text{and} \quad P(x &gt; M) \le
+\frac{1}{2}
+\]</span></p>
+<h4 id="remarks">Remarks</h4>
+<ul>
+<li><p>If <span class="math inline">\(p\)</span> is a pdf, then <span
+class="math inline">\(M\)</span> is a unique value such that <span
+class="math display">\[
+F(M) = \int_{-\infty}^{M} p(x) dx = \frac{1}{2}.
+\]</span></p></li>
+<li><p>If <span class="math inline">\(p\)</span> is a pmf, then <span
+class="math inline">\(M\)</span> may not be unique.</p></li>
+</ul>
+<hr />
+<h3 id="example">Example</h3>
+<p>Find the median of Exponential<span
+class="math inline">\((\lambda)\)</span>.</p>
+<h3 id="solution">Solution</h3>
+<p>Recall the pdf of Exponential<span
+class="math inline">\((\lambda)\)</span> is <span
+class="math inline">\(p(x) = \lambda e^{-\lambda x}\)</span> for <span
+class="math inline">\(x &gt; 0\)</span> and <span
+class="math inline">\(0\)</span> elsewhere.</p>
+<p>Hence the cdf is <span class="math display">\[
+F(x) = \begin{cases}
+1 - e^{-\lambda x} &amp; x &gt; 0, \\
+0 &amp; x \le 0 .
+\end{cases}
+\]</span> Solving <span class="math inline">\(F(M)=1-e^{-\lambda M} =
+\frac{1}{2}\)</span> yields the median <span class="math inline">\(M =
+\frac{\ln 2}{\lambda}\)</span>.</p>
+<hr />
+<h3 id="the-cdf-f-and-the-median-m-in-the-exponentiallambda-example">The
+cdf <span class="math inline">\(F\)</span> and the median <span
+class="math inline">\(M\)</span> in the Exponential<span
+class="math inline">\((\lambda)\)</span> example</h3>
+<p><img src="./figs/ch08/fig8-3.png" alt="cdf of exponential distribution" width="400"></p>
+<hr />
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Compare median <span
+class="math inline">\(M\)</span> and mean <span
+class="math inline">\(\mu\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(M =
+\mu\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(M &lt;
+\mu\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(M &gt;
+\mu\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Skewness of the population <span
+class="math inline">\(p\)</span></strong></td>
+<td style="text-align: center;">symmetric</td>
+<td style="text-align: center;">right-skewed</td>
+<td style="text-align: center;">left-skewed</td>
+</tr>
+</tbody>
+</table>
+<p><img src="./figs/ch08/fig8-2.png" alt="skewness" width="800"></p>
+<p><strong>Example:</strong> Exponential<span
+class="math inline">\((\lambda)\)</span> has <span
+class="math inline">\(M = \frac{\ln
+2}{\lambda}\approx\frac{0.69}{\lambda}\)</span> and <span
+class="math inline">\(\mu = \frac{1}{\lambda}\)</span>, so it is
+right-skewed.</p>
+<hr />
+<h3 id="example-1">Example</h3>
+<p>Find the median of Binomial(5,0.5).</p>
+<h3 id="solution-1">Solution</h3>
+<p>Recall the pmf is <span class="math inline">\(p(x) =
+\binom{5}{x}(0.5)^x(1-0.5)^{5-x}\)</span> for <span
+class="math inline">\(x=0,1,\dots,5\)</span>. Then <span
+class="math display">\[ F(x) = \sum_{k \le x} p(x) \]</span> By
+calculations, we see the median <span class="math inline">\(M\)</span>
+can be any value in the interval <span
+class="math inline">\((2,3)\)</span>.</p>
+<hr />
+<h3 id="example-2">Example</h3>
+<p>Find the median of Binomial(5,0.4).</p>
+<h3 id="solution-2">Solution</h3>
+<p>Recall the pmf is <span class="math inline">\(p(x) =
+\binom{5}{x}(0.4)^x(1-0.4)^{5-x}\)</span> for <span
+class="math inline">\(x=0,1,\dots,5\)</span>. Then <span
+class="math display">\[ F(x) = \sum_{k \le x} p(x) \]</span> By
+calculations, we see only <span class="math inline">\(M=2\)</span> is
+the median.</p>
+<hr />
+<h3 id="the-cdfs-f-of-the-two-binomial-distributions-above">The cdf’s
+<span class="math inline">\(F\)</span> of the two Binomial distributions
+above</h3>
+<p><img src="./figs/ch08/fig8-4.png" alt="cdf of Binominal distributions"></p>
+<hr />
+<h3 id="definition-1">Definition</h3>
+<p>Let <span class="math inline">\(q \in (0,1)\)</span>, the
+<strong><span class="math inline">\(q\)</span>-quantile</strong> of a
+population <span class="math inline">\(p\)</span> is a number <span
+class="math inline">\(x_q\)</span> such that <span
+class="math display">\[
+P(X &lt; x_q) \le q \quad \text{and} \quad P(X &gt; x_q) \le 1-q .
+\]</span></p>
+<p>The following three <span class="math inline">\(q\)</span>’s are
+mostly used:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(q\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0.25\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0.5\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0.75\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Notation</td>
+<td style="text-align: center;"><span
+class="math inline">\(Q_1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(Q_2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(Q_3\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="remarks-1">Remarks</h4>
+<ul>
+<li><span class="math inline">\(Q_2\)</span> is just the median <span
+class="math inline">\(M\)</span>.</li>
+<li>If <span class="math inline">\(p\)</span> is a pdf, then <span
+class="math inline">\(Q_1\)</span> is the value such that <span
+class="math inline">\(F(Q_1) = \int_{-\infty}^{Q_1}p(x)dx =
+0.25\)</span>, etc.</li>
+</ul>
+<hr />
+<h3 id="example-3">Example</h3>
+<p>Find <span class="math inline">\(Q_1\)</span> and <span
+class="math inline">\(Q_3\)</span> of Exponential(<span
+class="math inline">\(\lambda\)</span>).</p>
+<h3 id="solution-3">Solution</h3>
+<p>Solving <span class="math inline">\(F(Q_1) = 1-e^{-\lambda Q_1} =
+0.25\)</span> yields <span class="math inline">\(Q_1 =
+\frac{\ln(4/3)}{\lambda}\)</span>.</p>
+<p>Solving <span class="math inline">\(F(Q_3) = 1-e^{-\lambda Q_3} =
+0.75\)</span> yields <span class="math inline">\(Q_3 = \frac{\ln
+4}{\lambda}\)</span>.</p>
+<hr />
+<h3 id="definition-2">Definition</h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span> be a sample and sorted in
+ascending order, then its <strong>sample median</strong>, denoted by
+<span class="math inline">\(\widehat{M}\)</span>, is defined by - <span
+class="math inline">\(\widehat{M} = X_{\frac{n+1}{2}}\)</span> if <span
+class="math inline">\(n\)</span> is odd. - <span
+class="math inline">\(\widehat{M} = \frac{1}{2}(X_{\frac{n}{2}} +
+X_{\frac{n}{2}+1})\)</span> if <span class="math inline">\(n\)</span> is
+even.</p>
+<hr />
+<h3 id="example-4">Example</h3>
+<p>Given a sample <span class="math inline">\(3,\ 5,\ 2,\ 9,\
+2\)</span>. Find its sample median.</p>
+<h3 id="solution-4">Solution</h3>
+<p>Sort the sample in ascending order: <span class="math display">\[ 2,
+\ 2, \ 3, \ 5, \ 9 \]</span> Since the sample size <span
+class="math inline">\(n=5\)</span> is odd, the sample median is <span
+class="math display">\[ \widehat{M} = X_{\frac{n+1}{2}} = X_3 = 3.
+\]</span></p>
+<hr />
+<h3 id="example-5">Example</h3>
+<p>Given a sample <span class="math inline">\(3,\ 5,\ 2,\ 9,\ 2,\
+9\)</span>. Find its sample median.</p>
+<h3 id="solution-5">Solution</h3>
+<p>Sort the sample in ascending order: <span class="math display">\[ 2,
+\ 2, \ 3, \ 5, \ 9, \ 9 \]</span> Since the sample size <span
+class="math inline">\(n=6\)</span> is even, the sample median is <span
+class="math display">\[ \widehat{M} = \frac{1}{2}(X_{\frac{n}{2}} +
+X_{\frac{n}{2}+1}) = \frac{1}{2}(X_3 + X_4) = \frac{1}{2}(3+5) = 4.
+\]</span></p>
+<hr />
+<h3 id="definition-3">Definition</h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span> be a sample and sorted in
+ascending order and <span class="math inline">\(q \in (0,1)\)</span>,
+then its <strong>sample <span
+class="math inline">\(q\)</span>-quantile</strong>, denoted by <span
+class="math inline">\(\widehat{X}_q\)</span>, is the value in this
+sample such that</p>
+<ul>
+<li><span class="math inline">\(\widehat{X}_q\)</span> is larger than at
+most <span class="math inline">\(q\)</span> percent of the sample.</li>
+<li><span class="math inline">\(\widehat{X}_q\)</span> is smaller than
+at most <span class="math inline">\((1-q)\)</span> percent of the
+sample.</li>
+</ul>
+<p>Again, the three <span class="math inline">\(q\)</span>’s are mostly
+used with shorthand notations (e.g., <span
+class="math inline">\(\widehat{Q}_1 = \widehat{X}_{0.25}\)</span>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(q\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0.25\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0.5\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0.75\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Notation</td>
+<td style="text-align: center;"><span
+class="math inline">\(\widehat{Q}_1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\widehat{Q}_2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\widehat{Q}_3\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Note <span class="math inline">\(\widehat{Q}_2 =
+\widehat{M}\)</span>.</p>
+<hr />
+<h3 id="example-6">Example</h3>
+<p>Find <span class="math inline">\(\widehat{Q}_1\)</span>, <span
+class="math inline">\(\widehat{Q}_2\)</span>, and <span
+class="math inline">\(\widehat{Q}_3\)</span> of the following sample
+(already sorted): <span class="math display">\[
+\begin{aligned}
+\ 9&amp; \ \ \ 15\ \ \ 19\ \ \ 22\ \ \ 24\ \ \ 25\ \ \ 30\ \ \
+\underline{34}\ \ \ 35\ \ \ \ \ 35\ \ \ \\
+36&amp; \ \ \ 36\ \ \ 37\ \ \ 38\ \ \ \underline{42}\ \ \
+\underline{43}\ \ \ 46\ \ \ 48\ \ \ 54\ \ \ \ \ 55\ \ \ \\
+56&amp; \ \ \ 56\ \ \ \underline{59}\ \ \ 62\ \ \ 69\ \ \ 70\ \ \ 82\ \
+\ 82\ \ \ 89\ \ \ 139
+\end{aligned}
+\]</span></p>
+<h3 id="solution-6">Solution</h3>
+<p>Sample size is <span class="math inline">\(n=30\)</span>. Hence <span
+class="math inline">\(0.25n = 7.5\)</span> and <span
+class="math inline">\(0.75n=22.5\)</span>. Just need to round them up to
+<span class="math inline">\(8\)</span> and <span
+class="math inline">\(23\)</span>, respectively, to get <span
+class="math display">\[ \widehat{Q}_1 = X_8 = 34 \quad \text{and} \quad
+\widehat{Q}_3 = X_{23} = 59. \]</span> In addition, <span
+class="math inline">\(\widehat{Q}_2 = \widehat{M} =
+\frac{1}{2}(X_{15}+X_{16}) = 42.5\)</span>.</p>
+<hr />
+<h3 id="outlier-detection">Outlier Detection</h3>
+<p>The <strong>sample interquartile range</strong> <span
+class="math inline">\(\widehat{\text{IQR}}\)</span> is defined by <span
+class="math display">\[ \widehat{\text{IQR}} = \widehat{Q}_3 -
+\widehat{Q}_1 \]</span></p>
+<p>The <strong>1.5(IQR) rule</strong> says any number outside of <span
+class="math display">\[ [\widehat{Q}_1 - 1.5(\widehat{\text{IQR}}), \
+\widehat{Q}_3 + 1.5(\widehat{\text{IQR}})] \]</span> is considered as an
+<strong>outlier</strong>.</p>
+<hr />
+<h4 id="example-7">Example</h4>
+<p>Consider the previous sample with <span
+class="math inline">\(\widehat{Q}_1 = 34\)</span> and <span
+class="math inline">\(\widehat{Q}_3 = 59\)</span>. So <span
+class="math display">\[ \widehat{\text{IQR}} = \widehat{Q}_3 -
+\widehat{Q}_1 = 59-34=25. \]</span> The end points of the IQR interval
+are <span class="math display">\[ \widehat{Q}_1 - 1.5
+(\widehat{\text{IQR}}) = -3.5, \qquad \widehat{Q}_3 +
+1.5(\widehat{\text{IQR}}) = 96.5. \]</span> Note that <span
+class="math inline">\(139\)</span> in the sample is outside of <span
+class="math inline">\([-3.5,96]\)</span> and hence considered as an
+outlier.</p>
+<hr />
+<h3 id="definition-4">Definition</h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span> be a sample. Its <strong>sample
+variance</strong>, denoted by <span class="math inline">\(s^2\)</span>,
+is defined by <span class="math display">\[ s^2 = \frac{1}{n-1}
+\sum_{i=1}^{n} (X_i - \overline{X})^2 .\]</span> Its <strong>sample
+standard deviation</strong> is defined by <span
+class="math inline">\(s\)</span>.</p>
+<h3 id="remarks-2">Remarks</h3>
+<ul>
+<li><span class="math inline">\(s^2\)</span> is an unbiased estimator of
+variance, i.e., <span class="math inline">\(\mathbb{E}(s^2) =
+\sigma^2\)</span>.</li>
+<li>After simple algebra, we can show <span class="math inline">\(s^2 =
+\frac{1}{n-1}( \sum_{i=1}^{n} X_i^2 - n \overline{X}^2)\)</span>.</li>
+</ul>
+<hr />
+<p>Let <span class="math inline">\(\hat{\theta}\)</span> be an estimator
+of <span class="math inline">\(\theta\)</span>. Two quantities give a
+quick quality evaluation of <span
+class="math inline">\(\hat{\theta}\)</span>:</p>
+<ul>
+<li><strong>Biasness</strong>: <span
+class="math inline">\(\mathbb{E}(\hat{\theta}) - \theta\)</span>.</li>
+<li><strong>Standard error</strong>: <span
+class="math inline">\(\sigma(\hat{\theta})\)</span>.</li>
+</ul>
+<p><strong>Example:</strong> 10 samples each giving an estimate (show as
+<span class="math inline">\(\bullet\)</span>) <span
+class="math inline">\(\hat{\theta}\)</span>:</p>
+<p><img src="./figs/ch08/fig8-5.png" alt="biasness and standard error" width="900"></p>
+<hr />
+<h3 id="histogram">Histogram</h3>
+<p>Histogram is a plot of <span class="math inline">\(p\)</span> using a
+sample <span class="math inline">\(X_1,\dots,X_n\)</span>:</p>
+<ol type="1">
+<li>Specify a proper bin size.</li>
+<li>For each bin, draw a bar with height equal to the number of observed
+values following into the bin.</li>
+<li>If a relative frequency histogram is needed, just scale all bar
+heights by <span class="math inline">\(\frac{1}{n}\)</span>.</li>
+</ol>
+<hr />
+<h3 id="bin-size-is-critical-in-drawing-histograms">Bin size is critical
+in drawing histograms</h3>
+<p>Histograms with bin size too small or too large:</p>
+<p>&lt;img src=“./figs/ch08/fig8-8.png” alt=“histograms with bin size
+too small or large” width=“700”, height=“400”&gt;</p>
+<hr />
+<h3 id="histograms-of-some-typical-distributions">Histograms of some
+typical distributions:</h3>
+<p>Histogram of a sample can give some idea about the population <span
+class="math inline">\(p\)</span>.</p>
+<p><img src="./figs/ch08/fig8-7.png" alt="examples of histogram" width="600"></p>
+<hr />
+<h3 id="example-8">Example</h3>
+<p>Consider the sample in the previous example: <span
+class="math display">\[
+\begin{aligned}
+\ 9&amp; \ \ \ 15\ \ \ 19\ \ \ 22\ \ \ 24\ \ \ 25\ \ \ 30\ \ \
+\underline{34}\ \ \ 35\ \ \ \ \ 35\ \ \ \\
+36&amp; \ \ \ 36\ \ \ 37\ \ \ 38\ \ \ \underline{42}\ \ \
+\underline{43}\ \ \ 46\ \ \ 48\ \ \ 54\ \ \ \ \ 55\ \ \ \\
+56&amp; \ \ \ 56\ \ \ \underline{59}\ \ \ 62\ \ \ 69\ \ \ 70\ \ \ 82\ \
+\ 82\ \ \ 89\ \ \ 139
+\end{aligned}
+\]</span></p>
+<hr />
+<p>Choose bin size = 14, and draw the histograms of the sample:</p>
+<p><img src="./figs/ch08/fig8-6.png" alt="histogram" width="700"></p>
+<hr />
+<h3 id="stem-and-leaf-plot">Stem-and-Leaf plot</h3>
+<p>Specify the stem and leaf units, and draw “histogram” with sample
+values. For example, set the two units as 10 and 1, write each value as
+(10 “stem” + 1 “leaf”) form and put in the plot:</p>
+<p><img src="./figs/ch08/stem-leaf.png" alt="stem and leaf" width="500"></p>
+<hr />
+<h3 id="boxplot">Boxplot</h3>
+<p>Boxplot is a plot of the so-called <strong>five-point
+summary</strong> of a sample <span
+class="math inline">\(X_1,\dots,X_n\)</span>: <span
+class="math display">\[
+(\min, \ \widehat{Q}_1, \widehat{M}, \widehat{Q}_2, \ \max)
+\]</span></p>
+<ul>
+<li>min (max) is the smallest (largest) value of <span
+class="math inline">\(X_1,\dots,X_n\)</span>.</li>
+<li>Box left and right sides are <span
+class="math inline">\(\widehat{Q}_1\)</span> and <span
+class="math inline">\(\widehat{Q}_3\)</span>. Box middle line is <span
+class="math inline">\(\widehat{M}\)</span>.</li>
+<li>Sign “+” is <span class="math inline">\(\overline{X}\)</span>.
+Horizontal line is IQR interval <span
+class="math inline">\([\widehat{Q}_1 - 1.5 (\widehat{\text{IQR}}),
+\widehat{Q}_2 + 1.5(\widehat{\text{IQR}})]\)</span>.</li>
+<li>Values out of this interval (outliers) are plotted as “o”.</li>
+</ul>
+<p><img src="./figs/ch08/fig8-9.png" alt="boxplot" width="500"></p>
+<hr />
+<h3 id="remarks-3">Remarks</h3>
+<ul>
+<li>Sample mean, sample variance, and sample standard deviation are
+sensitive to outliers.</li>
+<li><span class="math inline">\(\widehat{Q}_1, \widehat{M},
+\widehat{Q}_2\)</span> are much less sensitive to outliers.</li>
+</ul>
+<hr />
+<h3 id="parallel-boxplots">Parallel boxplots</h3>
+<p>Multiple samples can be plotted as parallel boxplot for
+comparison:</p>
+<p><img src="./figs/ch08/fig8-10.png" alt="parallel boxplot" width="800"></p>
+</body>
+</html>

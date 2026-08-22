@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ch09_web</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="statistical-inference">Statistical Inference</h1>
+<p>Xiaojing Ye</p>
+<p>Department of Mathematics and Statistics</p>
+<p>Georgia State University</p>
+<hr />
+<h2 id="parameter-estimation">Parameter estimation</h2>
+<p>Let <span class="math inline">\(p\)</span> be a pmf/pdf with
+parameters <span class="math inline">\(\theta\)</span>. We call <span
+class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+p\)</span> a <strong>sample</strong> of <span
+class="math inline">\(p\)</span>. - How to estimate <span
+class="math inline">\(\theta\)</span> given the sample? - How accurate
+is the estimate?</p>
+<p>For example:</p>
+<ul>
+<li>Let <span class="math inline">\(X_1,\dots,X_n\)</span> be a sample
+of Poisson<span class="math inline">\((\lambda)\)</span> with unknown
+parameter <span class="math inline">\(\lambda&gt;0\)</span>. How to
+estimate <span class="math inline">\(\lambda\)</span> using this
+sample?</li>
+<li>Let <span class="math inline">\(X_1,\dots,X_n\)</span> be a sample
+of <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> with
+unknown parameters <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span>, how to estimate <span
+class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span> using this sample?</li>
+</ul>
+<p>We will first introduce two methods to estimate parameters. Then we
+consider the estimation errors.</p>
+<hr />
+<h2 id="method-of-moments">Method of Moments</h2>
+<p><strong>Definition.</strong> The <strong><span
+class="math inline">\(k\)</span>-th moment</strong> of a distribution is
+<span class="math display">\[ \mu_k = \mathbb{E}(X^k) \]</span></p>
+<p><strong>Definition.</strong> The <strong><span
+class="math inline">\(k\)</span>-th central moment</strong> of a
+distribution is <span class="math display">\[ \mu_k =
+\mathbb{E}\Bigl((X-\mu)^2\Bigr) \]</span> where <span
+class="math inline">\(\mu = \mathbb{E}(X)\)</span>.</p>
+<hr />
+<h3 id="remarks">Remarks</h3>
+<!-- - $\mu_1 = \mathbb{E}(X) = \mu$.  -->
+<ul>
+<li><span class="math inline">\(\text{Var}(X) = \mathbb{E}(X^2) -
+(\mathbb{E}(X))^2 = \mu_2 - \mu_1^2\)</span>.</li>
+<li><span class="math inline">\(\mu_1&#39; = \mathbb{E}(X - \mu) =
+\mathbb{E}(X) - \mu = 0\)</span>.</li>
+<li><span class="math inline">\(\mu_2&#39; = \mathbb{E}(X-\mu)^2 =
+\text{Var}(X)\)</span>.</li>
+</ul>
+<hr />
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span>, where <span
+class="math inline">\(p\)</span> is a pmf or pdf.</p>
+<p><strong>Definition.</strong> The <strong><span
+class="math inline">\(k\)</span>-th sample moment</strong> of a
+distribution is <span class="math display">\[ m_k = \frac{1}{n}
+\sum_{i=1}^{n} X_i^k \]</span></p>
+<p><strong>Definition.</strong> The <strong><span
+class="math inline">\(k\)</span>-th sample central moment</strong> of a
+distribution is <span class="math display">\[ m_k&#39; = \frac{1}{n}
+\sum_{i=1}^{n} (X_i-\overline{X})^k \]</span> where <span
+class="math inline">\(\overline{X} = \frac{1}{n}\sum_{i=1}^{n}
+X_i\)</span>.</p>
+<hr />
+<h3 id="remarks-1">Remarks</h3>
+<ul>
+<li>The 1st sample moment <span class="math inline">\(m_1\)</span> is
+the sample mean, which is an unbiased estimator of <span
+class="math inline">\(\mu\)</span>: <span class="math display">\[
+\mathbb{E}(\overline{X}) = \mathbb{E} \Bigl( \frac{1}{n}\sum_{i=1}^{n}
+X_i \Bigr)= \frac{1}{n}\sum_{i=1}^{n} \mathbb{E}(X_i) = \frac{1}{n}
+\cdot ( n \mu ) = \mu
+\]</span></li>
+<li><span class="math inline">\(s^2 = \frac{1}{n-1} \sum_{i=1}^{n}  (X_i
+- \overline{X})^2\)</span> is an unbiased estimator of variance <span
+class="math inline">\(\sigma^2\)</span>.</li>
+<li><span class="math inline">\(m_k\)</span> is also an RV. We have its
+value only if we have realizations of <span
+class="math inline">\(X_1,\dots,X_n\)</span>.</li>
+<li><span class="math inline">\(\mu_2&#39; = \frac{1}{n}\sum_{i=1}^{n}
+(X_i - \overline{X})^2\)</span> is also an estimator of <span
+class="math inline">\(\sigma^2\)</span>, but different from the unbiased
+estimator <span class="math inline">\(s^2 = \frac{1}{n-1} \sum_{i=1}^{n}
+(X_i - \overline{X})^2\)</span>.</li>
+</ul>
+<hr />
+<h3 id="idea-of-the-method-of-moments">Idea of the method of
+moments</h3>
+<ul>
+<li><span class="math inline">\(\mu_k\)</span>’s are functions of the
+parameter(s) <span class="math inline">\(\theta\)</span>.</li>
+<li><span class="math inline">\(m_k\)</span>’s are numbers when we have
+realizations of <span class="math inline">\(X_1,\dots,X_n\)</span>.</li>
+</ul>
+<p>Suppose we have <span class="math inline">\(k\)</span> parameters in
+<span class="math inline">\(\theta\)</span>, we set a system of <span
+class="math inline">\(k\)</span> equations of <span
+class="math inline">\(\theta\)</span>: <span class="math display">\[
+\begin{cases}
+\mu_1 = m_1 \\
+\mu_2 = m_2 \\
+\quad \vdots \\
+\mu_k = m_k
+\end{cases}
+\]</span> and solve for <span class="math inline">\(\theta\)</span>.</p>
+<hr />
+<p><strong>Example.</strong> Suppose we have <span
+class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+\text{Poisson}(\lambda)\)</span>. Estimate <span
+class="math inline">\(\lambda\)</span> using the method of moments.</p>
+<p><strong>Solution.</strong> We only have <span
+class="math inline">\(k=1\)</span> parameter <span
+class="math inline">\(\lambda\)</span>. Just need to solve one equation
+<span class="math inline">\(\mu_1 = m_1\)</span>. As <span
+class="math display">\[\mu_1 = \mathbb{E}(X) = \lambda , \qquad m_1 =
+\frac{1}{n}\sum_{i=1}^{n} X_i = \overline{X} , \]</span> we have <span
+class="math display">\[ \lambda = \overline{X} . \]</span> Hence <span
+class="math inline">\(\overline{X}\)</span> is the estimator of <span
+class="math inline">\(\lambda\)</span>.</p>
+<hr />
+<p><strong>Example.</strong> Suppose we have <span
+class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+\mathcal{N}(\mu, \sigma^2)\)</span>. Estimate <span
+class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span> using the method of moments.</p>
+<p><strong>Solution.</strong> Notice <span class="math display">\[
+\begin{aligned}
+\mu_1 = \mu , \qquad &amp; m_1 = \overline{X}, \\ \mu_2 = \mu^2 +
+\sigma^2, \qquad &amp; m_2 = \frac{1}{n}\sum_{i=1}^{n} X_i^2.
+\end{aligned}
+\]</span> Solving <span class="math inline">\((\mu, \sigma^2)\)</span>
+from <span class="math inline">\(\mu_1 = m_1\)</span> and <span
+class="math inline">\(\mu_2 = m_2\)</span>, we find the estimators <span
+class="math display">\[
+\mu = \overline{X}, \qquad \sigma^2 = \frac{1}{n}\sum_{i=1}^{n} X_i^2 -
+\overline{X}^2 = \frac{1}{n}\sum_{i=1}^{n} (X_i - \overline{X})^2 .
+\]</span></p>
+<hr />
+<h2 id="method-of-maximum-likelihood">Method of Maximum Likelihood</h2>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p_\theta\)</span>, where <span
+class="math inline">\(p_\theta\)</span> is a pmf or pdf with parameter
+<span class="math inline">\(\theta\)</span>. Suppose <span
+class="math inline">\(x_1,\dots,x_n\)</span> are their realizations
+(observed values).</p>
+<p>The joint distribution of the sample is <span class="math display">\[
+\prod_{i=1}^{n} p_\theta(x_i) \]</span> where <span
+class="math inline">\(x_i\)</span> is the realization of <span
+class="math inline">\(X_i\)</span>.</p>
+<hr />
+<p><strong>Definition.</strong> The <strong>likelihood function of <span
+class="math inline">\(\theta\)</span></strong> is defined by <span
+class="math display">\[ L(\theta) := \prod_{i=1}^{n} p_\theta(x_i)
+.\]</span> Note that this is a function of <span
+class="math inline">\(\theta\)</span> as <span
+class="math inline">\(x_i\)</span>’s are known.</p>
+<p><strong>Definition.</strong> We call the maximizer of <span
+class="math inline">\(L(\theta)\)</span>: <span class="math display">\[
+\theta^* = \arg\max_{\theta} L(\theta) \]</span> the <strong>maximum
+likelihood estimator</strong> of <span
+class="math inline">\(\theta\)</span>.</p>
+<hr />
+<h3 id="log-likelihood-function">Log-likelihood function</h3>
+<p>We usually take the (natural) logarithm of <span
+class="math inline">\(L\)</span> to get the <strong>log-likelihood
+function</strong>: <span class="math display">\[ l(\theta) := \ln
+L(\theta) = \sum_{i=1}^{n} \ln p_\theta(x_i) .\]</span></p>
+<p>Notice the logarithm is a monotonic increasing function, so <span
+class="math inline">\(l\)</span> has the same maximizer as <span
+class="math inline">\(L\)</span>.</p>
+<p>It is almost always easier to maximize <span
+class="math inline">\(l\)</span> than <span
+class="math inline">\(L\)</span>.</p>
+<hr />
+<p><strong>Example.</strong> Given a sample <span
+class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+\text{Poisson}(\lambda)\)</span>. Find the maximum likelihood estimator
+of <span class="math inline">\(\lambda\)</span>.</p>
+<p><strong>Solution.</strong> Recall the pmf of Poisson(<span
+class="math inline">\(\lambda\)</span>) is <span
+class="math inline">\(p_\lambda(x) = \frac{\lambda^x e^{-x}}{x!}
+.\)</span> The likelihood and log-likelihood functions are <span
+class="math display">\[
+\begin{aligned}
+L(\lambda) &amp; = \prod_{i=1}^{n} p_\lambda (x_i) = \prod_{i=1}^{n}
+\frac{\lambda^{x_i} e^{-x_i}}{x_i!}, \\ l(\lambda) &amp; = \ln
+L(\lambda) = \sum_{i=1}^{n} ( x_i \ln \lambda - \lambda - \ln(x_i!)) .
+\end{aligned}
+\]</span></p>
+<hr />
+<p><strong>Solution (cont)</strong> To find the maximizer of <span
+class="math inline">\(l(\lambda)\)</span>, we solve <span
+class="math display">\[ l&#39;(\lambda) = \sum_{i=1}^{n} \Bigl(
+\frac{x_i}{\lambda} - 1) = 0 \]</span> for <span
+class="math inline">\(\lambda\)</span>, and get the solution <span
+class="math display">\[ \lambda = \frac{1}{n}\sum_{i=1}^{n} X_i =
+\overline{X}. \]</span> Hence <span
+class="math inline">\(\overline{X}\)</span> is the maximum likelihood
+estimator of <span class="math inline">\(\lambda\)</span>.</p>
+<hr />
+<h3 id="example">Example</h3>
+<p>Given a sample <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)\)</span>. Find
+the maximum likelihood estimator of <span
+class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span>.</p>
+<h3 id="solution">Solution</h3>
+<p>Recall the pdf of <span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> is <span
+class="math inline">\(p_{\mu,\sigma^2}(x) = \frac{1}{\sqrt{2 \pi
+\sigma^2}} e^{- \frac{|x-\mu|^2}{2\sigma^2}}.\)</span> The likelihood
+and log-likelihood functions are <span class="math display">\[
+\begin{aligned}
+L(\mu,\sigma^2) &amp; = \prod_{i=1}^{n} p_{\mu,\sigma^2} (x_i) =
+\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-
+\frac{|x_i-\mu|^2}{2\sigma^2}}, \\ l(\mu,\sigma^2) &amp; = \ln
+L(\lambda) = \sum_{i=1}^{n} \Bigl( - \frac{(x_i - \mu)^2}{2\sigma^2} -
+\frac{1}{2} \ln (2\pi\sigma^2) \Bigr) .
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="solution-cont">Solution (cont)</h3>
+<p>To find the maximizer of <span class="math inline">\(l(\mu,
+\sigma^2)\)</span>, we solve <span class="math display">\[
+\begin{aligned}
+\partial_\mu l(\mu, \sigma^2) &amp; = \sum_{i=1}^{n} \frac{x_i -
+\mu}{\sigma^2} = 0, \\ \partial_{\sigma^2}l(\mu,\sigma^2) &amp; =
+\sum_{i=1}^{n} \Bigl( \frac{(x_i - \mu)^2}{2\sigma^4} -
+\frac{1}{2\sigma^2} \Bigr) = 0
+\end{aligned}
+\]</span> for <span class="math inline">\(\mu, \sigma^2\)</span>, and
+get the solution <span class="math display">\[ \mu =
+\frac{1}{n}\sum_{i=1}^{n} X_i = \overline{X}, \qquad \sigma^2 =
+\frac{1}{n}\sum_{i=1}^{n} (X_i - \overline{X})^2 . \]</span> Hence <span
+class="math inline">\(\overline{X}\)</span> and <span
+class="math inline">\(\frac{1}{n}\sum_{i=1}^{n} (X_i -
+\overline{X})^2\)</span> are respectively the maximum likelihood
+estimators of <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span>.</p>
+<hr />
+<h3 id="remarks-2">Remarks</h3>
+<ul>
+<li>There are mostly just one or two parameters in the distribution of
+interest.</li>
+<li>Method of moments (MoM) and maximum likelihood estimation (MLE) may
+give different answers.</li>
+</ul>
+<hr />
+<h3 id="example-1">Example</h3>
+<p>Given a sample <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \text{Uniform}(0,b)\)</span>. Estimate <span
+class="math inline">\(b\)</span> using the method of moments and the
+method of maximum likelihood.</p>
+<h3 id="solution-1">Solution</h3>
+<p>We first consider the method of moments: since <span
+class="math inline">\(\mu_1 = \frac{b}{2}\)</span> and <span
+class="math inline">\(m_1 = \overline{X}\)</span>, we get <span
+class="math display">\[ b_{\text{MoM}} = 2\overline{X} . \]</span></p>
+<hr />
+<h3 id="solution-cont-1">Solution (cont)</h3>
+<p>Next consider the method of maximum likelihood: the likelihood
+function is <span class="math display">\[ L(b) = \prod_{i=1}^{n}
+\frac{1}{b} = \frac{1}{b^n}, \qquad \text{where} \quad 0 \le
+X_1,\dots,X_n \le b .\]</span> In other words, we want to maximize <span
+class="math inline">\(L(b)\)</span> subject to <span
+class="math inline">\(b \ge \max(X_1,\dots,X_n)\)</span>. Clearly, the
+maximizer is <span class="math display">\[ b_{\text{MLE}} =
+\max(X_1,\dots, X_n) .\]</span></p>
+<p>We see <span class="math inline">\(b_{\text{MoM}}\)</span> and <span
+class="math inline">\(b_{\text{MLE}}\)</span> are different.</p>
+<hr />
+<h2 id="estimation-of-standard-errors">Estimation of standard
+errors</h2>
+<p>How accurate are the estimators (obtained by MoM and MLE)?</p>
+<h3 id="idea">Idea:</h3>
+<p>Find the variance of the estimator, and substitute the unknowns by
+their estimates.</p>
+<hr />
+<h3 id="example-2">Example</h3>
+<p>Given a sample <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \text{Poisson}(\lambda)\)</span>. Find the
+standard error of the MoM estimate of <span
+class="math inline">\(\lambda\)</span>.</p>
+<h3 id="solution-2">Solution</h3>
+<p>Both mean and variance of Poisson<span
+class="math inline">\((\lambda)\)</span> are <span
+class="math inline">\(\lambda\)</span>. Recall the MoM estimator of
+<span class="math inline">\(\lambda\)</span> is <span
+class="math inline">\(\overline{X}\)</span>. Hence <span
+class="math display">\[
+\begin{aligned}
+\text{Var}(\overline{X}) &amp; = \text{Var}\Bigl(
+\frac{1}{n}\sum_{i=1}^{n} X_i \Bigr) = \frac{1}{n^2} \text{Var}\Bigl(
+\sum_{i=1}^{n} X_i \Bigr) \\ &amp; = \frac{1}{n^2} \cdot n \lambda =
+\frac{\lambda}{n} \approx \frac{\overline{X}}{n}.
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="another-solution">Another solution</h3>
+<p>Alternatively, we can use the unbiased estimator of <span
+class="math inline">\(\text{Var}(X_i) = \frac{1}{n-1}\sum_{i=1}^{n} (X_i
+- \overline{X})^2\)</span> and replace the second line above with <span
+class="math display">\[ \text{Var}(\overline{X}) = \frac{1}{n^2} \cdot n
+\text{Var}(X_i) = \frac{1}{n(n-1)} \sum_{i=1}^{n} (X_i - \overline{X})^2
+. \]</span></p>
+<p>We see these two solutions are different, but they are both valid
+estimates of <span
+class="math inline">\(\text{Var}(\overline{X})\)</span>.</p>
+<hr />
+<h2 id="confidence-intervals">Confidence Intervals</h2>
+<p>In statistics, instead of standard error of an estimator, it is more
+common to construct a <strong>confidence interval (CI)</strong> of the
+parameter to be estimated.</p>
+<p><strong>Definition.</strong> Let <span class="math inline">\(\alpha
+\in (0,1)\)</span>. An interval <span
+class="math inline">\([a,b]\)</span> is called a <span
+class="math inline">\((1-\alpha)100\%\)</span> <strong>confidence
+interval</strong> (CI) of <span class="math inline">\(\theta\)</span> if
+<span class="math display">\[
+P(a \le \theta \le b) = 1- \alpha .
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\alpha\)</span> is called the
+<strong>significance level</strong>. Typically <span
+class="math inline">\(\alpha\)</span> is set to 0.05, 0.01, or 0.1.</li>
+<li><span class="math inline">\(1-\alpha\)</span> is called the
+<strong>confidence level</strong>.</li>
+</ul>
+<p>Note that <span class="math inline">\([a,b]\)</span> is determined by
+<span class="math inline">\(\alpha\)</span> and <span
+class="math inline">\(\hat{\theta}\)</span>.</p>
+<hr />
+<h3 id="remarks-3">Remarks</h3>
+<ul>
+<li>Different value of <span class="math inline">\(\hat{\theta}\)</span>
+(due to different realizations of <span
+class="math inline">\(X_1,\dots,X_n\)</span>) yields different <span
+class="math inline">\([a,b]\)</span>.</li>
+<li>Even the same <span class="math inline">\(\hat{\theta}\)</span>
+allows different choices of <span class="math inline">\([a,b]\)</span>.
+But we typically choose the one with smallest length.</li>
+</ul>
+<hr />
+<h3 id="a-general-method">A general method</h3>
+<p>If</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\hat{\theta}) =
+\theta\)</span>,</li>
+<li><span class="math inline">\(\sigma(\hat{\theta})\)</span> is known
+or can be accurately approximated,</li>
+<li><span class="math inline">\(\hat{\theta}\)</span> follows Gaussian
+distribution,</li>
+</ul>
+<p>then <span class="math display">\[ Z = \frac{\hat{\theta} -
+\theta}{\sigma(\hat{\theta})} \sim \mathcal{N}(0,1) . \]</span></p>
+<hr />
+<h3 id="the-pdf-of-mathcaln01">The pdf of <span
+class="math inline">\(\mathcal{N}(0,1)\)</span>:</h3>
+<!-- ![pdf of standard Gaussian](./figs/ch09/Z_CI.png) -->
+<p>Note that <span class="math inline">\(z_{\alpha/2}\)</span> is the
+value such that <span class="math inline">\(\int_{z_{\alpha/2}}^{\infty}
+p(z) dz = \frac{\alpha}{2}\)</span>, where <span
+class="math inline">\(p\)</span> is the pdf of <span
+class="math inline">\(\mathcal{N}(0,1)\)</span>.</p>
+<p><img src="./figs/ch09/Z_CI.png" alt="confidence interval of the standard normal random variable" width="600"></p>
+<hr />
+<p>Consequently, there is <span class="math display">\[
+P\Bigl( -z_{\alpha/2} \le Z \le z_{\alpha/2} \Bigr) = 1 - \alpha .
+\]</span></p>
+<p>Substitute <span class="math inline">\(Z = \frac{\hat{\theta} -
+\theta}{\sigma(\hat{\theta})}\)</span> into above, we find <span
+class="math display">\[
+P\Bigl( \hat{\theta} -z_{\alpha/2} \sigma(\hat{\theta}) \le \theta \le
+\hat{\theta} + z_{\alpha/2} \sigma(\hat{\theta}) \Bigr) = 1 - \alpha .
+\]</span></p>
+<p>So the <span class="math inline">\((1-\alpha)100\%\)</span> CI of
+<span class="math inline">\(\theta\)</span> is <span
+class="math display">\[
+\Bigl[ \hat{\theta} -z_{\alpha/2} \sigma(\hat{\theta}), \quad
+\hat{\theta}  + z_{\alpha/2} \sigma(\hat{\theta}) \Bigr] .
+\]</span></p>
+<hr />
+<h3 id="remarks-4">Remarks</h3>
+<p>The CI is often written as <span class="math display">\[
+\hat{\theta} \pm z_{\alpha/2} \sigma(\hat{\theta})
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\hat{\theta}\)</span> is called the
+<strong>center</strong>.</li>
+<li><span class="math inline">\(z_{\alpha/2}
+\sigma(\hat{\theta})\)</span> is called the
+<strong>margin</strong>.</li>
+</ul>
+<hr />
+<h3 id="one--and-two-sample-cases">One- and Two-sample Cases</h3>
+<ol type="1">
+<li><strong>One-sample case</strong>
+<ul>
+<li><span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span> with mean <span
+class="math inline">\(\mu\)</span> and variance <span
+class="math inline">\(\sigma^2\)</span>. Sample size <span
+class="math inline">\(n\)</span>.</li>
+</ul></li>
+<li><strong>Two-sample case</strong>
+<ul>
+<li><span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p_X\)</span> with mean <span
+class="math inline">\(\mu_X\)</span> and variance <span
+class="math inline">\(\sigma_X^2\)</span>. Sample size <span
+class="math inline">\(n\)</span>.</li>
+<li><span class="math inline">\(Y_1,\dots,Y_m
+\stackrel{\text{iid}}{\sim} p_Y\)</span> with mean <span
+class="math inline">\(\mu_Y\)</span> and variance <span
+class="math inline">\(\sigma_Y^2\)</span>. Sample size <span
+class="math inline">\(m\)</span>.</li>
+<li>These two samples are independent.</li>
+</ul></li>
+</ol>
+<hr />
+<h3 id="cases-of-cis-to-be-considered">Cases of CIs to be
+considered:</h3>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 30%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Case</th>
+<th style="text-align: left;"><span
+class="math inline">\(\qquad\qquad\)</span> 1</th>
+<th style="text-align: left;"><span
+class="math inline">\(\qquad\qquad\qquad\)</span> 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>A</strong></td>
+<td style="text-align: left;">CI of <span
+class="math inline">\(\mu\)</span>. Any <span
+class="math inline">\(p\)</span>, known <span
+class="math inline">\(\sigma^2\)</span>.</td>
+<td style="text-align: left;">CI of <span class="math inline">\(\mu_X -
+\mu_Y\)</span>. Any <span class="math inline">\(p_X,p_Y\)</span>, known
+<span class="math inline">\(\sigma_X^2,\sigma_Y^2\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">CI of <span
+class="math inline">\(\mu\)</span>. Any <span
+class="math inline">\(p\)</span>, unknown <span
+class="math inline">\(\sigma^2\)</span>, large <span
+class="math inline">\(n\)</span>.</td>
+<td style="text-align: left;">CI of <span class="math inline">\(\mu_X -
+\mu_Y\)</span>. Any <span class="math inline">\(p_X,p_Y\)</span>,
+unknown <span class="math inline">\(\sigma_X^2,\sigma_Y^2\)</span>,
+large <span class="math inline">\(n,m\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>C</strong></td>
+<td style="text-align: left;">CI of <span
+class="math inline">\(\mu\)</span>. Gaussian <span
+class="math inline">\(p\)</span>, unknown <span
+class="math inline">\(\sigma^2\)</span>, small <span
+class="math inline">\(n\)</span>.</td>
+<td style="text-align: left;">CI of <span class="math inline">\(\mu_X -
+\mu_Y\)</span>. Gaussian <span class="math inline">\(p_X, p_Y\)</span>,
+unknown <span class="math inline">\(\sigma_X^2,\sigma_Y^2\)</span>,
+small <span class="math inline">\(n,m\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>D</strong></td>
+<td style="text-align: left;">CI of <span
+class="math inline">\(\sigma^2\)</span>. Gaussian <span
+class="math inline">\(p\)</span>.</td>
+<td style="text-align: left;">CI of <span
+class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span>. Gaussian <span
+class="math inline">\(p_X,p_Y\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="case-a1-ci-of-mu-for-any-distribution-p-with-known-sigma2">Case
+A1: CI of <span class="math inline">\(\mu\)</span> for any distribution
+<span class="math inline">\(p\)</span> with known <span
+class="math inline">\(\sigma^2\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span> with unknown mean <span
+class="math inline">\(\mu\)</span> but known <span
+class="math inline">\(\sigma^2\)</span>. Now we construct the CI of
+<span class="math inline">\(\mu\)</span>.</p>
+<p>We choose <span class="math inline">\(\hat{\mu}=\overline{X}\)</span>
+as the estimator of <span class="math inline">\(\mu\)</span>. Note
+that</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\overline{X}) =
+\mu\)</span>.</li>
+<li>We know <span class="math inline">\(\overline{X} \sim
+\mathcal{N}(\mu, \frac{\sigma^2}{n})\)</span> if
+<ul>
+<li><span class="math inline">\(p\)</span> is Gaussian, or</li>
+<li><span class="math inline">\(p\)</span> is not Gaussian, but <span
+class="math inline">\(n\)</span> is large (e.g., <span
+class="math inline">\(n \ge 30\)</span>) by Central Limit Theorem (CLT).
+<!-- - If $\sigma^2$ is unknown, we can approximate it by its unbiased estimator $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \overline{X})^2$ provided $n$ is large. --></li>
+</ul></li>
+</ul>
+<hr />
+<p>As <span class="math inline">\(\frac{\overline{X} -
+\mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1),\)</span> there is <span
+class="math display">\[ P\Bigl( - z_{\alpha/2} \le \frac{\overline{X} -
+\mu}{\sigma/\sqrt{n}} \le z_{\alpha/2} \Bigr) = 1-\alpha . \]</span>
+Namely <span class="math display">\[ P\Bigl( \overline{X} - z_{\alpha/2}
+\frac{\sigma}{\sqrt{n}} \le \mu \le \overline{X} + z_{\alpha/2}
+\frac{\sigma}{\sqrt{n}} \Big) = 1-\alpha .\]</span> So the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(\mu\)</span> is <span class="math display">\[
+\overline{X} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}. \]</span></p>
+<hr />
+<h3 id="example-3">Example</h3>
+<p>Suppose we have a sample <span class="math display">\[ 2.5, \ 8.4, \
+8.0,  \ 4.5, \ 7.4, \ 9.2 \]</span> from a normal distribution with
+<span class="math inline">\(\sigma = 2.2\)</span>. Find the 95% CI of
+the mean <span class="math inline">\(\mu\)</span>.</p>
+<h3 id="solution-3">Solution</h3>
+<p>The confidence level is <span class="math inline">\(\alpha =
+0.05\)</span> and hence <span class="math inline">\(z_{\alpha/2} =
+z_{0.025} = 1.96\)</span>. The sample mean is <span
+class="math inline">\(\overline{X} = 6.5\)</span> and sample size is
+<span class="math inline">\(n=6\)</span>. Hence the 95% CI of <span
+class="math inline">\(\mu\)</span> is <span class="math display">\[
+\overline{X} \pm z_{0.025} \frac{\sigma}{\sqrt{n}} = 6.5 \pm 1.96 \cdot
+\frac{2.2}{\sqrt{6}}. \]</span></p>
+<hr />
+<h3 id="a-side-question-sample-size-requirement">A side question: Sample
+size requirement?</h3>
+<p>In the case above, how large <span class="math inline">\(n\)</span>
+needs to be if we want sufficiently small margin <span
+class="math inline">\(\Delta\)</span>?</p>
+<p>In other words, we need <span class="math display">\[ z_{\alpha/2}
+\frac{\sigma}{\sqrt{n}} \le \Delta . \]</span> Solving for <span
+class="math inline">\(n\)</span>, we find <span class="math display">\[
+n \ge \Bigl( \frac{z_{\alpha/2} \sigma}{\Delta} \Bigr)^2 .\]</span>
+Round <span class="math inline">\(n\)</span> up if the right-hand-side
+is non-integer.</p>
+<!-- - If $\sigma^2$ is unknown, substitute it by $s^2$ in the CI.
+- The CI above is smallest two-sided CI with confidence level $1-\alpha$. -->
+<hr />
+<h3
+id="case-a2-ci-of-mu_x-mu_y-for-any-distributions-p_xp_y-with-known-variances-sigma_x2sigma_y2">Case
+A2: CI of <span class="math inline">\(\mu_X-\mu_Y\)</span> for any
+distributions <span class="math inline">\(p_X,p_Y\)</span> with known
+variances <span
+class="math inline">\(\sigma_X^2,\sigma_Y^2\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p_X\)</span> with unknown mean <span
+class="math inline">\(\mu_X\)</span> but known variance <span
+class="math inline">\(\sigma_X^2\)</span>, and independently <span
+class="math inline">\(Y_1,\dots,Y_m \stackrel{\text{iid}}{\sim}
+p_Y\)</span> with unknown mean <span
+class="math inline">\(\mu_Y\)</span> but known variance <span
+class="math inline">\(\sigma_Y^2\)</span>. Now we construct the CI of
+<span class="math inline">\(\mu_X - \mu_Y\)</span>.</p>
+<p>We choose <span class="math inline">\(\overline{X}\)</span> and <span
+class="math inline">\(\overline{Y}\)</span> as the estimators of <span
+class="math inline">\(\mu_X\)</span> and <span
+class="math inline">\(\mu_Y\)</span>, respectively. Note that</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\overline{X}) =
+\mu_X\)</span> and <span class="math inline">\(\mathbb{E}(\overline{Y})
+= \mu_Y\)</span>.</li>
+<li>We know <span class="math inline">\(\overline{X} \sim
+\mathcal{N}(\mu_X, \frac{\sigma_X^2}{n})\)</span> and <span
+class="math inline">\(\overline{Y} \sim \mathcal{N}(\mu_Y,
+\frac{\sigma_Y^2}{m})\)</span> if
+<ul>
+<li><span class="math inline">\(p_X\)</span> and <span
+class="math inline">\(p_Y\)</span> are Gaussian, or</li>
+<li><span class="math inline">\(p_X\)</span> (or <span
+class="math inline">\(p_Y\)</span>) is not Gaussian, but <span
+class="math inline">\(n\)</span> (or <span
+class="math inline">\(m\)</span>) is large.
+<!-- - If $\sigma^2$ is unknown, we can approximate it by its unbiased estimator $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \overline{X})^2$ provided $n$ is large. --></li>
+</ul></li>
+</ul>
+<hr />
+<p>Hence <span class="math inline">\(\overline{X} - \overline{Y} \sim
+\mathcal{N}\Bigl(\mu_X - \mu_Y , \frac{\sigma_X^2}{n} +
+\frac{\sigma_Y^2}{m}\Bigr)\)</span> and there is</p>
+<p><span class="math display">\[ P\Bigl( - z_{\alpha/2} \le
+\frac{(\overline{X} - \overline{Y}) - (\mu_X -
+\mu_Y)}{\sqrt{\frac{\sigma_X^2}{n} + \frac{\sigma_Y^2}{m}}} \le
+z_{\alpha/2} \Bigr) = 1-\alpha . \]</span> Namely <span
+class="math display">\[ P\biggl( (\overline{X}-\overline{Y}) -
+z_{\alpha/2} \sqrt{\frac{\sigma_X^2}{n} + \frac{\sigma_Y^2}{m}} \le
+\mu_X - \mu_Y \le (\overline{X} - \overline{Y}) + z_{\alpha/2}
+\sqrt{\frac{\sigma_X^2}{n} + \frac{\sigma_Y^2}{m}} \biggr) = 1-\alpha
+.\]</span> So the <span class="math inline">\((1-\alpha)100\%\)</span>
+CI of <span class="math inline">\((\mu_X - \mu_Y)\)</span> is <span
+class="math display">\[ (\overline{X}-\overline{Y}) \pm z_{\alpha/2}
+\sqrt{\frac{\sigma_X^2}{n} + \frac{\sigma_Y^2}{m}}. \]</span></p>
+<hr />
+<h3
+id="case-b1-ci-of-mu-for-any-p-with-unknown-sigma2-but-large-sample-size-n">Case
+B1: CI of <span class="math inline">\(\mu\)</span> for any <span
+class="math inline">\(p\)</span> with unknown <span
+class="math inline">\(\sigma^2\)</span> but large sample size <span
+class="math inline">\(n\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p\)</span> with unknown mean <span
+class="math inline">\(\mu\)</span> and variance <span
+class="math inline">\(\sigma^2\)</span> but large <span
+class="math inline">\(n\)</span>.</p>
+<p>Note that</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\overline{X}) =
+\mu\)</span>.</li>
+<li><span class="math inline">\(\overline{X} \sim \mathcal{N}(\mu,
+\frac{\sigma^2}{n})\)</span> by CLT.</li>
+</ul>
+<p>We can approximate <span class="math inline">\(\sigma^2\)</span> by
+<span class="math inline">\(s^2 = \frac{1}{n-1}\sum_{i=1}^{n}
+(X_i-\overline{X})^2\)</span> (or <span
+class="math inline">\(\frac{1}{n}\sum_{i=1}^{n} (X_i -
+\overline{X})^2\)</span>), and find the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(\mu\)</span> as <span class="math display">\[
+\overline{X} \pm z_{\alpha/2} \frac{s}{\sqrt{n}}. \]</span></p>
+<hr />
+<p><strong>Example.</strong> Let <span
+class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+\text{Binomial}(p)\)</span> where <span class="math inline">\(n \ge
+30\)</span>. Find the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(p\)</span>.</p>
+<p><strong>Solution.</strong> Recall the mean and variance of
+Binomial(<span class="math inline">\(p\)</span>) are <span
+class="math inline">\(p\)</span> and <span
+class="math inline">\(p(1-p)\)</span>, respectively.</p>
+<p>We know <span class="math inline">\(\mathbb{E}(\overline{X}) =
+p\)</span> and by CLT that <span class="math inline">\(\overline{X} \sim
+\mathcal{N}(p, \frac{p(1-p)}{n})\)</span>. Furthermore, we approximate
+the variance <span class="math inline">\(p(1-p)\)</span> by <span
+class="math display">\[ \frac{1}{n}\sum_{i=1}^{n} (X_i - \overline{X})^2
+= \cdots = \overline{X} ( 1- \overline{X}) . \quad \text{(Hint: $X_i$ is
+1 or 0, so $X_i^2 = X_i$).}\]</span> Then the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(p\)</span> is <span class="math display">\[
+\overline{X} \pm z_{\alpha/2}
+\sqrt{\frac{\overline{X}(1-\overline{X})}{n}} . \]</span></p>
+<hr />
+<h3
+id="case-b2-ci-of-mu_x-mu_y-for-any-p_xp_y-with-unknown-sigma_x2sigma_y2-but-large-nm">Case
+B2: CI of <span class="math inline">\(\mu_X-\mu_Y\)</span> for any <span
+class="math inline">\(p_X,p_Y\)</span> with unknown <span
+class="math inline">\(\sigma_X^2,\sigma_Y^2\)</span> but large <span
+class="math inline">\(n,m\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p_X\)</span> with unknown mean <span
+class="math inline">\(\mu_X\)</span> and variance <span
+class="math inline">\(\sigma_X^2\)</span>, and independently <span
+class="math inline">\(Y_1,\dots,Y_m \stackrel{\text{iid}}{\sim}
+p_Y\)</span> with unknown mean <span
+class="math inline">\(\mu_Y\)</span> and variance <span
+class="math inline">\(\sigma_Y^2\)</span>. Now we construct the CI of
+<span class="math inline">\(\mu_X - \mu_Y\)</span>.</p>
+<p>We choose <span class="math inline">\(\overline{X}\)</span> and <span
+class="math inline">\(\overline{Y}\)</span> as the estimators of <span
+class="math inline">\(\mu_X\)</span> and <span
+class="math inline">\(\mu_Y\)</span>, respectively. Note that</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(\overline{X}) =
+\mu_X\)</span> and <span class="math inline">\(\mathbb{E}(\overline{Y})
+= \mu_Y\)</span>.</li>
+<li>We know <span class="math inline">\(\overline{X} \sim
+\mathcal{N}(\mu_X, \frac{\sigma_X^2}{n})\)</span> and <span
+class="math inline">\(\overline{Y} \sim \mathcal{N}(\mu_Y,
+\frac{\sigma_Y^2}{m})\)</span> by CLT.
+<!-- - If $\sigma^2$ is unknown, we can approximate it by its unbiased estimator $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \overline{X})^2$ provided $n$ is large. --></li>
+</ul>
+<p>We can approximate <span class="math inline">\(\sigma_X^2\)</span>
+and <span class="math inline">\(\sigma_Y^2\)</span> by their sample
+variances, and construct the CI of <span class="math inline">\(\mu_X -
+\mu_Y\)</span> similarly.</p>
+<hr />
+<p><strong>Example.</strong> Let <span
+class="math inline">\(X_1,\dots,X_n \stackrel{\text{iid}}{\sim}
+\text{Binomial}(p_X)\)</span> and <span
+class="math inline">\(Y_1,\dots,Y_m \stackrel{\text{iid}}{\sim}
+\text{Binomial}(p_Y)\)</span> independently, where <span
+class="math inline">\(n,m \ge 30\)</span>. Find the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(p_X - p_Y\)</span>.</p>
+<p><strong>Solution.</strong> We know <span
+class="math inline">\(\mathbb{E}(\overline{X}) = p_X\)</span> and <span
+class="math inline">\(\mathbb{E}(\overline{Y}) = p_Y\)</span>, and by
+CLT that <span class="math display">\[\overline{X} \sim \mathcal{N}
+\Bigl(p_X, \frac{p_X(1-p_X)}{n} \Bigr) \quad \text{and} \quad
+\overline{Y} \sim \mathcal{N} \Bigl(p_Y,
+\frac{p_Y(1-p_Y)}{m}\Bigr)\]</span> We approximate the variances <span
+class="math inline">\(p_X(1-p_X)\)</span> by <span
+class="math display">\[ \frac{1}{n}\sum_{i=1}^{n} (X_i - \overline{X})^2
+= \cdots = \overline{X} ( 1- \overline{X}) .\]</span> Similar for <span
+class="math inline">\(p_Y(1-p_Y)\)</span>. Then the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of (<span
+class="math inline">\(p_X - p_Y\)</span>) is <span
+class="math display">\[ (\overline{X} - \overline{Y}) \pm z_{\alpha/2}
+\sqrt{\frac{\overline{X}(1-\overline{X})}{n} +
+\frac{\overline{Y}(1-\overline{Y})}{m}} . \]</span></p>
+<hr />
+<h3
+id="case-c1-ci-of-mu-for-gaussian-p-with-unknown-sigma2-and-small-sample-size-n">Case
+C1: CI of <span class="math inline">\(\mu\)</span> for Gaussian <span
+class="math inline">\(p\)</span> with unknown <span
+class="math inline">\(\sigma^2\)</span> and small sample size <span
+class="math inline">\(n\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)\)</span> with
+unknown <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span> and small <span
+class="math inline">\(n\)</span> (e.g., <span
+class="math inline">\(n&lt;30\)</span>).</p>
+<p>We can approximate <span class="math inline">\(\sigma^2\)</span> by
+its unbiased estimator <span class="math display">\[s^2 =
+\frac{1}{n-1}\sum_{i=1}^{n} (X_i-\overline{X})^2\]</span> but <span
+class="math inline">\(n\)</span> is small so <span
+class="math inline">\(s^2\)</span> is not accurate.</p>
+<p>In such case, <span class="math inline">\(\frac{\overline{X} -
+\mu}{s/\sqrt{n}}\)</span> no longer follows <span
+class="math inline">\(\mathcal{N}(0,1)\)</span>!</p>
+<p>Instead, <span class="math inline">\(\frac{\overline{X} -
+\mu}{s/\sqrt{n}}\)</span> follows the Student’s <span
+class="math inline">\(t\)</span> distribution with degrees of freedom
+<span class="math inline">\(n-1\)</span>.</p>
+<hr />
+<h3 id="students-t-distribution">Student’s <span
+class="math inline">\(t\)</span> distribution</h3>
+<p><strong>Definition.</strong> Suppose <span class="math inline">\(Z
+\sim \mathcal{N}(0,1)\)</span> and <span class="math inline">\(V \sim
+\chi_{\nu}^2\)</span> are independent, then <span
+class="math display">\[ t = \frac{Z}{\sqrt{V/\nu}} \]</span> is said to
+follow the <strong>Student’s <span class="math inline">\(t\)</span>
+distribution with degrees of freedom <span
+class="math inline">\(\nu\)</span></strong>, denoted by <span
+class="math inline">\(t \sim t_{\nu}\)</span>.</p>
+<hr />
+<h3
+id="the-pdf-of-students-t_nu-distribution-with-degrees-of-freedom-nu">The
+pdf of Student’s <span class="math inline">\(t_{\nu}\)</span>
+distribution with degrees of freedom <span
+class="math inline">\(\nu\)</span></h3>
+<p><img src="./figs/ch09/Student_t_pdf.svg" alt="student t distribution" width="800" height="450">
+<!-- <figcaption>Figure obtained from wikipedia.com</figcaption> --></p>
+<hr />
+<h3 id="students-t-distribution-1">Student’s <span
+class="math inline">\(t\)</span> distribution</h3>
+<p>The pdf of <span class="math inline">\(t_{\nu}\)</span> is (no need
+to memorize) <span class="math display">\[ p(t) = \frac{1}{\sqrt{\nu}
+\text{B}(\frac{1}{2},\frac{1}{\nu})} \Bigl( 1 + \frac{t^2}{\nu}
+\Bigr)^{-(\nu+1)/2} \]</span> for every <span class="math inline">\(t
+\in \mathbb{R}\)</span>, where B is the pdf of Beta distribution.</p>
+<ul>
+<li><span class="math inline">\(p\)</span> is symmetric about <span
+class="math inline">\(t=0\)</span>.</li>
+<li>As <span class="math inline">\(\nu \to \infty\)</span>, <span
+class="math inline">\(p \to \mathcal{N}(0,1)\)</span>.</li>
+</ul>
+<hr />
+<!-- ### One-sample Gaussian with unknown $\mu$, $\sigma^2$, and small $n$ -->
+<h3 id="proposition">Proposition</h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)\)</span> with
+unknown <span class="math inline">\(\mu\)</span> and <span
+class="math inline">\(\sigma^2\)</span>, and <span
+class="math inline">\(n\)</span> is small. Denote <span
+class="math display">\[s^2 = \frac{1}{n-1}\sum_{i=1}^{n}
+(X_i-\overline{X})^2 . \]</span> Then <span class="math display">\[
+\frac{\overline{X} - \mu}{s/\sqrt{n}} \sim t_{n-1} . \]</span></p>
+<hr />
+<h3 id="sketch-of-proof">Sketch of proof</h3>
+<p>We rewrite <span class="math display">\[
+\frac{\overline{X} - \mu}{s/\sqrt{n}} = \frac{\frac{\overline{X} -
+\mu}{\sigma/\sqrt{n}}}{\frac{s/\sqrt{n}}{\sigma/\sqrt{n}}} =
+\frac{\frac{\overline{X} - \mu}{\sigma/\sqrt{n}}}{\frac{s}{\sigma}} =
+\frac{\frac{\overline{X} -
+\mu}{\sigma/\sqrt{n}}}{\sqrt{\frac{(n-1)s^2}{\sigma^2}/ (n-1)}} .
+\]</span></p>
+<p>We just need show <span class="math display">\[
+\frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1), \qquad
+\frac{(n-1)s^2}{\sigma^2} \sim \chi_{n-1}^2
+\]</span></p>
+<p>and these two are independent RVs.</p>
+<hr />
+<!-- ### CI of $\mu$ from $\mathcal{N}(\mu,\sigma^2)$ with unknown $\sigma^2$ and small $n$ -->
+<p>By the proposition, we have <span class="math display">\[
+P\Bigl( - t_{\alpha/2, n-1} \le \frac{\overline{X} - \mu}{s/\sqrt{n}}
+\le t_{\alpha/2, n-1} \Bigr) = 1-\alpha ,
+\]</span></p>
+<p>or equivalently <span class="math display">\[
+P\Bigl( \overline{X} - t_{\alpha/2, n-1} \frac{s}{\sqrt{n}} \le \mu \le
+\overline{X} + t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}\Bigr) = 1-\alpha .
+\]</span></p>
+<p>Hence the <span class="math inline">\((1-\alpha)100\%\)</span> CI of
+<span class="math inline">\(\mu\)</span> is <span
+class="math display">\[
+\overline{X} \pm t_{\alpha/2,n-1} \frac{s}{\sqrt{n}} .
+\]</span></p>
+<hr />
+<h3 id="example-4">Example</h3>
+<p>A Gaussian sample of size <span class="math inline">\(n=18\)</span>
+has <span class="math inline">\(\overline{X} = 0.29\)</span> and <span
+class="math inline">\(s^2 = 0.074^2\)</span>. Find the 95% CI of its
+mean <span class="math inline">\(\mu\)</span>.</p>
+<h3 id="solution-4">Solution</h3>
+<p>Notice that <span class="math inline">\(\alpha = 0.05\)</span> and
+<span class="math display">\[ t_{\alpha/2,n-1} = t_{0.025,17} = 2.898
+.\]</span> Hence the 95% CI of <span class="math inline">\(\mu\)</span>
+is <span class="math display">\[ \overline{X} \pm t_{\alpha/2,n-1}
+\frac{s}{\sqrt{n}} = 0.29 \pm 2.898 \cdot \frac{0.074}{\sqrt{18}} = 0.29
+\pm 0.05. \]</span></p>
+<hr />
+<h3
+id="case-c2-ci-of-mu_x-mu_y-from-two-gaussian-p_xp_y-with-unknown-variances-sigma_x2sigma_y2-and-small-sample-sizes-nm">Case
+C2: CI of <span class="math inline">\(\mu_X-\mu_Y\)</span> from two
+Gaussian <span class="math inline">\(p_X,p_Y\)</span> with unknown
+variances <span class="math inline">\(\sigma_X^2,\sigma_Y^2\)</span> and
+small sample sizes <span class="math inline">\(n,m\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} p_X = \mathcal{N}(\mu_X,\sigma_X^2)\)</span>
+with unknown mean <span class="math inline">\(\mu_X\)</span> and
+variance <span class="math inline">\(\sigma_X^2\)</span>, and
+independently <span class="math inline">\(Y_1,\dots,Y_m
+\stackrel{\text{iid}}{\sim} p_Y = \mathcal{N}(\mu_Y,
+\sigma_Y^2)\)</span> with unknown mean <span
+class="math inline">\(\mu_Y\)</span> and variance <span
+class="math inline">\(\sigma_Y^2\)</span>. Now we construct the CI of
+<span class="math inline">\(\mu_X - \mu_Y\)</span>.</p>
+<p>We choose <span class="math inline">\(\overline{X}\)</span> and <span
+class="math inline">\(\overline{Y}\)</span> as the estimators of <span
+class="math inline">\(\mu_X\)</span> and <span
+class="math inline">\(\mu_Y\)</span>, and <span
+class="math inline">\(s_X^2\)</span> and <span
+class="math inline">\(s_Y^2\)</span> as the unbiased estimators of <span
+class="math inline">\(\sigma_X^2\)</span> and <span
+class="math inline">\(\sigma_Y^2\)</span>.</p>
+<p>We will consider two subcases: - Subcase C2(i): <span
+class="math inline">\(\sigma_X^2 = \sigma_Y^2\)</span>. - Subcase
+C2(ii): <span class="math inline">\(\sigma_X^2 \ne
+\sigma_Y^2\)</span>.</p>
+<hr />
+<h3 id="the-pdf-of-chi_k2-with-degrees-of-freedom-k">The pdf of <span
+class="math inline">\(\chi_k^2\)</span> with degrees of freedom <span
+class="math inline">\(k\)</span></h3>
+<p><img src="./figs/ch09/chi-square_pdf.svg" alt="pdf of chi square distribution" width="600"></p>
+<hr />
+<h3
+id="subcase-c2i-ci-of-mu_x---mu_y-with-sigma_x2-sigma_y2-sigma2">Subcase
+C2(i): CI of <span class="math inline">\(\mu_X - \mu_Y\)</span> with
+<span class="math inline">\(\sigma_X^2 = \sigma_Y^2 =
+\sigma^2\)</span></h3>
+<p>Notice that <span class="math display">\[
+\frac{(n-1)s_X^2}{\sigma_X^2} + \frac{(m-1)s_Y^2}{\sigma_Y^2} =
+\frac{(n-1)s_X^2 + (m-1)s_Y^2}{\sigma^2} \sim \chi_{n+m-2}^2 .
+\]</span> We define the <strong>pooled sample variance</strong> by <span
+class="math display">\[
+s_p^2 = \frac{(n-1)s_X^2 + (m-1)s_Y^2}{n+m-2} = \frac{\sum_{i=1}^{n}
+(X_i - \overline{X})^2 + \sum_{j=1}^{m} (Y_j - \overline{Y})^2}{n+m-2} .
+\]</span></p>
+<p>Then it is shown that the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\((\mu_X - \mu_Y)\)</span> is <span
+class="math display">\[
+(\overline{X} - \overline{Y}) \pm t_{\frac{\alpha}{2},n+m-2} s_p
+\sqrt{\frac{1}{n}+ \frac{1}{m}} .
+\]</span></p>
+<hr />
+<h3
+id="subcase-c2ii-ci-of-mu_x---mu_y-with-sigma_x2-ne-sigma_y2">Subcase
+C2(ii): CI of <span class="math inline">\(\mu_X - \mu_Y\)</span> with
+<span class="math inline">\(\sigma_X^2 \ne \sigma_Y^2\)</span></h3>
+<p>Determine the degrees of freedom <span
+class="math inline">\(\nu\)</span> (round it to the nearest integer) by
+<span class="math display">\[ \nu =
+\frac{\frac{s_X^2}{n}+\frac{s_Y^2}{m}}{\frac{s_X^4}{n^2(n-1)}+\frac{s_Y^4}{m^2(m-1)}}.
+\]</span> Then it is shown that the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\((\mu_X - \mu_Y)\)</span> is <span
+class="math display">\[ (\overline{X} - \overline{Y}) \pm
+t_{\frac{\alpha}{2},\nu} \sqrt{\frac{s_X^2}{n}+\frac{s_Y^2}{m}} .
+\]</span></p>
+<hr />
+<h3 id="case-d1-ci-of-sigma2-in-mathcalnmusigma2">Case D1: CI of <span
+class="math inline">\(\sigma^2\)</span> in <span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)\)</span> with
+sample mean <span class="math inline">\(\overline{X}\)</span> and
+unbiased sample variance <span class="math inline">\(s^2\)</span>.</p>
+<p>It is known that <span class="math display">\[
+\frac{(n-1)s^2}{\sigma^2} \sim \chi_{n-1}^2 . \]</span> Therefore <span
+class="math display">\[ P\Bigl( \chi_{1-\frac{\alpha}{2}, n-1} \le
+\frac{(n-1)s^2}{\sigma^2} \le \chi_{\frac{\alpha}{2}, n-1} \Bigr) =
+1-\alpha. \]</span> Hence the <span
+class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(\sigma^2\)</span> is <span class="math display">\[
+\biggl[ \frac{(n-1)s^2}{\chi_{\frac{\alpha}{2}, n-1}}, \
+\frac{(n-1)s^2}{\chi_{1-\frac{\alpha}{2}, n-1}} \biggr]. \]</span></p>
+<hr />
+<h3
+id="case-d2-ci-of-sigma_x2sigma_y2-for-two-gaussian-mathcalnmu_xsigma_x2-and-mathcalnmu_ysigma_y2">Case
+D2: CI of <span class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span> for
+two Gaussian <span
+class="math inline">\(\mathcal{N}(\mu_X,\sigma_X^2)\)</span> and <span
+class="math inline">\(\mathcal{N}(\mu_Y,\sigma_Y^2)\)</span></h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n
+\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu_X,\sigma_X^2)\)</span> with
+unbiased sample variance <span class="math inline">\(s_X^2\)</span>, and
+independently <span class="math inline">\(Y_1,\dots,Y_m
+\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu_Y,\sigma_Y^2)\)</span> with
+unbiased sample variance <span class="math inline">\(s_Y^2\)</span>.</p>
+<p>We know <span class="math display">\[ \frac{(n-1)s_X^2}{\sigma_X^2}
+\sim \chi_{n-1}^2, \qquad \frac{(m-1)s_Y^2}{\sigma_Y^2} \sim
+\chi_{m-1}^2 . \]</span></p>
+<p>We need a new distribution, called the <span
+class="math inline">\(F\)</span>-distribution, to find the CI of <span
+class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span>.</p>
+<hr />
+<h3 id="f-distribution"><span
+class="math inline">\(F\)</span>-distribution</h3>
+<h4 id="definition">Definition</h4>
+<p>Suppose <span class="math inline">\(U \sim \chi_{n}^2\)</span> and
+<span class="math inline">\(V \sim \chi_{m}^2\)</span> are independent,
+then the ratio <span class="math display">\[ F = \frac{U/n}{V/m}
+\]</span> is said to follow the <strong><span
+class="math inline">\(F\)</span>-distribution with numerator degrees of
+freedom <span class="math inline">\(n\)</span> and denominator degrees
+of freedom <span class="math inline">\(m\)</span></strong>. This is
+denoted by <span class="math inline">\(F \sim F_{n,m}\)</span>.</p>
+<h3 id="remarks-5">Remarks</h3>
+<ul>
+<li><span class="math inline">\(F=\frac{U/n}{V/m}\)</span> is
+nonnegative.</li>
+<li>If <span class="math inline">\(F= \frac{U/n}{V/m} \sim
+F_{n,m}\)</span>, then <span class="math inline">\(\frac{1}{F} =
+\frac{V/m}{U/n} \sim F_{m,n}\)</span>.</li>
+</ul>
+<hr />
+<h3
+id="the-pdf-of-f_d_1d_2-distribution-with-degrees-of-freedom-d_1d_2">The
+pdf of <span class="math inline">\(F_{d_1,d_2}\)</span> distribution
+with degrees of freedom <span
+class="math inline">\(d_1,d_2\)</span></h3>
+<ul>
+<li><span class="math inline">\(d_1\)</span> (<span
+class="math inline">\(d_2\)</span>) is numerator (denominator) degrees
+of freedom.</li>
+</ul>
+<p><img src="./figs/ch09/F_pdf.svg" alt="pdf of F distribution" width="800" height="450">
+<!-- <figcaption>Figure obtained from wikipedia.com</figcaption> --></p>
+<hr />
+<p>Now we know <span class="math display">\[
+\frac{s_X^2/\sigma_X^2}{s_Y^2/\sigma_Y^2} \sim F_{n-1,m-1}. \]</span>
+Therefore <span class="math display">\[ P\Bigl( F_{1-\frac{\alpha}{2},
+n-1,m-1} \le \frac{s_X^2/\sigma_X^2}{s_Y^2/\sigma_Y^2} \le
+F_{\frac{\alpha}{2}, n-1,m-1} \Bigr) = 1-\alpha. \]</span> Hence the
+<span class="math inline">\((1-\alpha)100\%\)</span> CI of <span
+class="math inline">\(\sigma_X^2/\sigma_Y^2\)</span> is <span
+class="math display">\[ \biggl[
+\frac{s_X^2/s_Y^2}{F_{\frac{\alpha}{2},n-1,m-1}}, \
+\frac{s_X^2/s_Y^2}{F_{1-\frac{\alpha}{2},n-1,m-1}} \biggr].
+\]</span></p>
+<hr />
+<h3 id="hypothesis-testing">Hypothesis Testing</h3>
+<p>A dual concept of CI is <strong>Hypothesis Testing</strong>: suppose
+someone presumes the parameter <span
+class="math inline">\(\theta\)</span> of interest equals <span
+class="math inline">\(\theta_0\)</span>, we want to see whether this
+hypothesis should be rejected based on sample.</p>
+<p>Formally, this hypothesis test is represented as <span
+class="math display">\[ H_0: \ \theta = \theta_0 \quad \text{vs} \quad
+H_A: \ \theta \ne \theta_0 . \]</span></p>
+<p>Here <span class="math inline">\(H_0\)</span> is called the
+<strong>null hypothesis</strong>, and <span
+class="math inline">\(H_A\)</span> is called the <strong>alternative
+hypothesis</strong>.</p>
+<p>The test above is called <strong>two-sided</strong>. There are also
+<strong>one-sided</strong> tests: - If <span class="math inline">\(H_A:
+\theta &lt; \theta_0\)</span>, then the test is called
+<strong>left-tailed</strong>. - If <span class="math inline">\(H_A:
+\theta &gt; \theta_0\)</span>, then the test is called
+<strong>right-tailed</strong>.</p>
+<hr />
+<h3 id="goal-of-hypothesis-testing">Goal of Hypothesis Testing</h3>
+<p>The goal is to decide whether <span
+class="math inline">\(H_0\)</span> should be rejected based on the
+estimate of <span class="math inline">\(\theta\)</span>.</p>
+<p>Specifically, consider the two-sided hypothesis test above. To decide
+whether we should reject <span class="math inline">\(H_0\)</span>, we
+need to specify a <strong>significance level <span
+class="math inline">\(\alpha\)</span></strong>. Then we find the
+estimate <span class="math inline">\(\hat{\theta}\)</span> of <span
+class="math inline">\(\theta\)</span> based on a sample, and reject
+<span class="math inline">\(H_0\)</span> if it holds with probability
+less than <span class="math inline">\(\alpha\)</span> given this
+observation <span class="math inline">\(\hat{\theta}\)</span>.</p>
+<hr />
+<h3 id="example-5">Example</h3>
+<p>A Gaussian sample of size <span class="math inline">\(n=18\)</span>
+has sample mean <span class="math inline">\(\overline{X} = 0.29\)</span>
+and unbiased sample variance <span class="math inline">\(s^2 =
+0.074^2\)</span>. Consider the hypothesis test <span
+class="math display">\[ H_0: \ \mu = 0.2 \quad \text{vs} \quad H_A: \
+\mu \ne 0.2 \]</span> with significance level <span
+class="math inline">\(\alpha = 0.05\)</span>.</p>
+<h3 id="solution-5">Solution</h3>
+<p>We know <span class="math inline">\(t = \frac{\overline{X} -
+\mu}{s/\sqrt{n}} \sim t_{n-1}.\)</span> Under <span
+class="math inline">\(H_0:\mu=0.2\)</span>, there is <span
+class="math inline">\(t = \frac{0.29-0.2}{0.074/\sqrt{18}} =
+5.16.\)</span> On the other hand, <span
+class="math inline">\(t_{\alpha/2,n-1} = t_{0.025,17} = 2.11\)</span>.
+We call <span class="math inline">\([-2.11,2.11]\)</span> the
+<strong>acceptance region</strong> of <span
+class="math inline">\(H_0\)</span>, and <span
+class="math inline">\((-\infty,-2.11) \cup (2.11,\infty)\)</span> the
+<strong>rejection region</strong> of <span
+class="math inline">\(H_0\)</span>.</p>
+<p>Since <span class="math inline">\(t&gt;2.11\)</span> and is in the
+rejection region, <span class="math inline">\(H_0\)</span> should be
+rejected.</p>
+<hr />
+<h3 id="example-6">Example</h3>
+<p>Two Gaussian distributions with unequal variances each having sample:
+<span class="math display">\[
+\begin{aligned}
+n=12, \quad \overline{X} = 4.8, \quad s_X^2 = 1.6^2 \\ m=18, \quad
+\overline{Y} = 5.3, \quad s_X^2 = 1.4^2
+\end{aligned}
+\]</span> Consider the hypothesis test <span class="math display">\[
+H_0: \ \mu_X = \mu_Y \quad \text{vs} \quad H_A: \ \mu_X &lt; \mu_Y
+\]</span> with significance level <span class="math inline">\(\alpha =
+0.05\)</span>.</p>
+<hr />
+<h3 id="solution-6">Solution</h3>
+<p>Since their variances are equal, we can compute the pooled sample
+variance <span class="math display">\[ s_p^2 = \frac{(n-1)s_X^2 +
+(m-1)s_Y^2}{n+m-2} = \frac{(12-1)\cdot 1.6^2 + (18-1)\cdot
+1.4^2}{12+18-2} = 1.4818^2. \]</span> Under <span
+class="math inline">\(H_0: \mu_X = \mu_Y\)</span>, there is <span
+class="math display">\[ t = \frac{(\overline{X} - \overline{Y}) - (\mu_X
+- \mu_Y)}{s_p \sqrt{\frac{1}{n}+\frac{1}{m}}} \sim t_{n+m-2} \]</span>
+Plugging in numbers, we find <span class="math inline">\(t =
+-0.9054\)</span>. On the other hand, <span
+class="math inline">\(t_{\alpha/2,n+m-2} = t_{0.025, 28} =
+1.654\)</span>. Note the rejection region of <span
+class="math inline">\(H_0\)</span> is <span
+class="math inline">\((-\infty,-1.654)\)</span>. Since <span
+class="math inline">\(t&gt;-1.654\)</span>, we should not reject <span
+class="math inline">\(H_0\)</span>.</p>
+<hr />
+<h3 id="example-7">Example</h3>
+<p>Two Gaussian distributions with unequal variances each having sample:
+<span class="math display">\[
+\begin{aligned}
+n=30, \quad \overline{X} = 6.7, \quad s_X^2 = 0.6^2 \\ m=20, \quad
+\overline{Y} = 7.5, \quad s_X^2 = 1.2^2
+\end{aligned}
+\]</span> Consider the hypothesis test <span class="math display">\[
+H_0: \ \mu_X - \mu_Y = -0.2 \quad \text{vs} \quad H_A: \ \mu_X - \mu_Y
+&lt; -0.2 \]</span> with significance level <span
+class="math inline">\(\alpha = 0.05\)</span>.</p>
+<hr />
+<h3 id="solution-7">Solution</h3>
+<p>Since their variances are not equal, we know <span
+class="math display">\[ t = \frac{(\overline{X} - \overline{Y}) - (\mu_X
+- \mu_Y)}{\sqrt{\frac{s_X^2}{n}+\frac{s_Y^2}{m}}} \sim t_{\nu} \]</span>
+where the degrees of freedom <span class="math inline">\(\nu\)</span> is
+the integer nearest to <span class="math display">\[
+\frac{\frac{s_X^2}{n}+\frac{s_Y^2}{m}}{\frac{s_X^4}{n^2(n-1)}+\frac{s_Y^4}{m^2(m-1)}}.
+\]</span></p>
+<hr />
+<h3 id="solution-cont-2">Solution (cont)</h3>
+<p>Plugging in the numbers, we find the fraction above is <span
+class="math inline">\(25.4\)</span> (so we take <span
+class="math inline">\(\nu = 25\)</span>), and <span
+class="math display">\[ t =
+\frac{6.7-7.5-(-0.2)}{\sqrt{\frac{0.6^2}{30}+\frac{1.2^2}{20}}} = -2.07
+\]</span> under <span class="math inline">\(H_0: \mu_X - \mu_Y =
+-0.2\)</span>.</p>
+<p>On the other hand, <span class="math inline">\(t_{\alpha,\nu} =
+t_{0.05, 25} = 1.708\)</span>. Note the acceptance region of <span
+class="math inline">\(H_0\)</span> is <span
+class="math inline">\([-1.708,\infty)\)</span>.</p>
+<p>Since <span class="math inline">\(t&lt;-1.708\)</span>, we should
+reject <span class="math inline">\(H_0\)</span>.</p>
+<hr />
+<h3 id="type-i-and-type-ii-errors">Type I and Type II errors</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong><span
+class="math inline">\(H_0\)</span> is true</strong></th>
+<th style="text-align: center;"><strong><span
+class="math inline">\(H_0\)</span> is false</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><span
+class="math inline">\(H_0\)</span> is not rejected</strong></td>
+<td style="text-align: center;">correct (with probability <span
+class="math inline">\(1-\alpha\)</span>)</td>
+<td style="text-align: center;">Type II error (with probability <span
+class="math inline">\(\beta\)</span>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><span
+class="math inline">\(H_0\)</span> is rejected</strong></td>
+<td style="text-align: center;">Type I error (with probability <span
+class="math inline">\(\alpha\)</span>)</td>
+<td style="text-align: center;">correct (with probability <span
+class="math inline">\(1-\beta\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Type I error is also called “false positive”. Its probability is
+<span class="math inline">\(\alpha\)</span> when the test has a
+prescribed significance level <span
+class="math inline">\(\alpha\)</span>.</li>
+<li>Type II error is also called “false negative”. Its probability is
+denoted by <span class="math inline">\(\beta\)</span>. Note <span
+class="math inline">\(1-\beta\)</span> is known as <strong>the power of
+the test</strong>, which is the larger the better.</li>
+<li>Type I error is more notorious than Type II error. In practice,
+people usually prescribe a small <span
+class="math inline">\(\alpha\)</span> (e.g., 0.05) and try to minimize
+<span class="math inline">\(\beta\)</span> when designing a hypothesis
+test.</li>
+</ul>
+<hr />
+<h3 id="p-value"><span class="math inline">\(p\)</span>-value</h3>
+<p>The <span class="math inline">\(p\)</span>-value is the probability
+of obtaining a test statistic at least as extreme as the one obtained
+under <span class="math inline">\(H_0\)</span>.</p>
+<h3 id="example-8">Example</h3>
+<p>Suppose <span class="math inline">\(Z \sim
+\mathcal{N}(\mu,1)\)</span> and we observe a value 3.61 of <span
+class="math inline">\(Z\)</span>. Consider <span
+class="math inline">\(H_0: \mu = 0\)</span> vs <span
+class="math inline">\(H_A: \mu&gt;0\)</span> (Note this is a one-sided
+right-tailed test). Then the <span
+class="math inline">\(p\)</span>-value is <span class="math display">\[
+P(Z &gt; 3.61) = 1-\Phi(3.61) = 0.0002, \]</span> where <span
+class="math inline">\(\Phi\)</span> is the cdf of <span
+class="math inline">\(\mathcal{N}(0,1)\)</span>.</p>
+<p>This <span class="math inline">\(p\)</span>-value is well below <span
+class="math inline">\(0.05\)</span>, so we should reject <span
+class="math inline">\(H_0\)</span> if the significance level is set to
+<span class="math inline">\(\alpha=0.05\)</span>.</p>
+<hr />
+<h3 id="example-9">Example</h3>
+<p>Suppose <span class="math inline">\(Z \sim
+\mathcal{N}(\mu,1)\)</span> and we observe a value <span
+class="math inline">\(-0.94\)</span> of <span
+class="math inline">\(Z\)</span>. Consider <span
+class="math inline">\(H_0: \mu = 0\)</span> vs <span
+class="math inline">\(H_A: \mu \ne 0\)</span> (Note this is a two-sided
+test). Then the <span class="math inline">\(p\)</span>-value is <span
+class="math display">\[ P(Z &gt; 0.94 \text{~or~} Z&lt;-0.94) =
+2(1-\Phi(0.94)) = 0.3472. \]</span></p>
+<p>This <span class="math inline">\(p\)</span>-value is quite large, so
+we should not reject <span class="math inline">\(H_0\)</span> if the
+significance level is set to <span
+class="math inline">\(\alpha=0.05\)</span>.</p>
+</body>
+</html>

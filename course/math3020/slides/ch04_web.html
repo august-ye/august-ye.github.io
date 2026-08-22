@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ch04_web</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="continuous-random-variables-and-distributions">Continuous Random
+Variables and Distributions</h1>
+<p>Xiaojing Ye</p>
+<p>Department of Mathematics and Statistics</p>
+<p>Georgia State University</p>
+<hr />
+<h2 id="continuous-random-variables">Continuous Random Variables</h2>
+<p>A continuous RV <span class="math inline">\(X\)</span> can take any
+value in an interval of <span
+class="math inline">\(\mathbb{R}\)</span>.</p>
+<p>Therefore, the set of possible values of <span
+class="math inline">\(X\)</span> is uncountable, and it is not
+meaningful to consider <span class="math inline">\(P(X=x)\)</span> for
+any specific <span class="math inline">\(x\)</span>.</p>
+<p>Instead, we only consider <span class="math inline">\(P(a &lt; X
+&lt;b)\)</span> for some interval <span
+class="math inline">\((a,b)\)</span>.</p>
+<hr />
+<h3 id="distribution-functions">Distribution Functions</h3>
+<p>We call <span class="math inline">\(p\)</span> the
+<strong>probability density function</strong> (pdf) of <span
+class="math inline">\(X\)</span> if <span class="math display">\[ P(a
+&lt; X &lt; b) = \int_{a}^{b} p(x) \, dx\]</span> for <strong>any
+interval <span class="math inline">\((a,b)\)</span> in <span
+class="math inline">\(\mathbb{R}\)</span></strong>. Note <span
+class="math inline">\(a,b\)</span> can be <span
+class="math inline">\(\pm\infty\)</span>.</p>
+<p>Due to the property of integral, we see <span class="math display">\[
+P(a&lt;X&lt; b) = P(a \le X &lt; b) = P(a &lt; X \le b) = P(a \le X \le
+b) \]</span></p>
+<p>We define <span class="math inline">\(F\)</span> as the
+<strong>cumulative distribution function</strong> (cdf) of <span
+class="math inline">\(X\)</span> if <span class="math display">\[ F(x) =
+P(X\le x) = \int_{-\infty}^{x} p(z) \, dz \]</span> for any <span
+class="math inline">\(x \in \mathbb{R}\)</span>.</p>
+<hr />
+<h4 id="properties-of-pdf">Properties of pdf</h4>
+<ul>
+<li><strong>Non-negative:</strong> <span class="math inline">\(p(x) \ge
+0\)</span>.</li>
+<li><strong>Unity:</strong> <span
+class="math inline">\(\int_{-\infty}^{\infty} p(x) dx = 1\)</span>.</li>
+</ul>
+<h4 id="properties-of-cdf">Properties of cdf</h4>
+<ul>
+<li><span class="math inline">\(F\)</span> is non-decreasing.</li>
+<li>(Continuous RV only) <span class="math inline">\(F\)</span> is
+differentiable and <span class="math display">\[ p(x) = \frac{d}{dx}
+F(x) \]</span></li>
+<li><span class="math inline">\(0 \le F(x) \le 1\)</span> for all <span
+class="math inline">\(x \in \mathbb{R}\)</span>.</li>
+<li>The trend of <span class="math inline">\(F\)</span>: <span
+class="math display">\[ \lim_{x \to -\infty} F(x) = 0, \qquad \lim_{x
+\to +\infty} F(x) = 1 \]</span></li>
+</ul>
+<hr />
+<p><strong>Example.</strong> Suppose a continuous RV has pdf <span
+class="math display">\[ p(x) =
+\begin{cases}
+\frac{k}{x^3}, &amp; x \geq 1 \\
+0,                 &amp; x &lt; 1
+\end{cases} \]</span> Find the value of <span
+class="math inline">\(k\)</span>, the cdf <span
+class="math inline">\(F\)</span> of <span
+class="math inline">\(X\)</span>, and <span class="math inline">\(P(X
+&gt; 5)\)</span>.</p>
+<p><strong>Solution.</strong> For unity, we need <span
+class="math display">\[ 1 = \int_{-\infty}^{\infty} p(x)dx =
+\int_{1}^{\infty} \frac{k}{x^3} dx = \frac{k}{2} . \]</span> Hence <span
+class="math inline">\(k = 2\)</span>. Clearly <span
+class="math inline">\(F(x) = P(X\le x) = 0\)</span> if <span
+class="math inline">\(x &lt; 1\)</span>. For <span
+class="math inline">\(x\ge 1\)</span>, there is <span
+class="math display">\[ F(x) = \int_{-\infty}^{x} p(z)dz = \int_{1}^{x}
+\frac{2}{z^3} dz = 1 - \frac{1}{x^2}. \]</span> Moreover, <span
+class="math inline">\(P(X &gt;5) = 1-P(X \le 5) = 1-F(5)= 1 - (1-
+\frac{1}{5^2}) = 0.04\)</span>.</p>
+<hr />
+<h3 id="expectation-of-continuous-rvs">Expectation of continuous
+RVs</h3>
+<p>The <strong>expectation</strong> of a continuous RV <span
+class="math inline">\(X\)</span> with pdf <span
+class="math inline">\(p\)</span> is defined by <span
+class="math display">\[ \mathbb{E}(X) = \int_{-\infty}^{\infty} x p(x)
+\,dx \]</span></p>
+<ul>
+<li>Shorthand notations: <span class="math inline">\(\mu_X\)</span> or
+<span class="math inline">\(\mu\)</span>.</li>
+<li>Expectation is a <strong>weighted integration</strong> of all
+possible values.</li>
+<li>The weight of each point <span class="math inline">\(x\)</span> is
+<span class="math inline">\(p(x)\)</span>.</li>
+</ul>
+<hr />
+<h3 id="expectation-of-a-function">Expectation of a function</h3>
+<!-- We can extend to the expectation of a function as well. -->
+<p>Let <span class="math inline">\(X\)</span> be a RV and <span
+class="math inline">\(Y=g(X)\)</span> for some function <span
+class="math inline">\(g\)</span>. Then <span class="math display">\[
+\mathbb{E}(Y) = \mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(x) p(x)
+\,dx \]</span></p>
+<hr />
+<h3 id="variance-and-standard-deviation">Variance and Standard
+Deviation</h3>
+<p>The <strong>variance</strong> of <span
+class="math inline">\(X\)</span> is defined by <span
+class="math display">\[ \text{Var}(X) = \mathbb{E} \big( (X - \mu)^2
+\big) = \int_{-\infty}^{\infty} (x-\mu)^2 p(x) \, dx\]</span> Shorthand
+notations of variance: <span class="math inline">\(\sigma_X^2\)</span>
+or <span class="math inline">\(\sigma^2\)</span>. We still can show
+<span class="math inline">\(\text{Var}(X) = \mathbb{E}(X^2) -
+\mu^2\)</span>.</p>
+<p>The <strong>standard deviation</strong> of <span
+class="math inline">\(X\)</span> is <span class="math display">\[
+\sigma_X = \sqrt{\text{Var}(X)} \]</span> Sometimes also written as
+<span class="math inline">\(\text{std}(X)\)</span>.</p>
+<p><strong>Remark.</strong> <span
+class="math inline">\(\text{Var}(X)\)</span> is always non-negative.</p>
+<hr />
+<h3 id="covariance-and-correlation-between-two-rvs">Covariance and
+Correlation between two RVs</h3>
+<p>The <strong>covariance</strong> between <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> is defined by <span
+class="math display">\[
+\text{Cov}(X,Y) = \mathbb{E}\bigl( (X-\mu_X)(Y-\mu_Y) \bigr) =
+\mathbb{E}(XY) - \mu_X \mu_Y
+\]</span></p>
+<p>The <strong>correlation</strong> between <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> is defined by <span
+class="math display">\[
+\text{Corr}(X,Y) = \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y}
+\]</span></p>
+<ul>
+<li>Shorthand notation: <span class="math inline">\(\rho_{X,Y}\)</span>
+or <span class="math inline">\(\rho\)</span>.</li>
+<li>Correlation is a <strong>normalization</strong> of covariance.</li>
+<li><span class="math inline">\(-1 \le \text{Corr}(X,Y) \le
+1\)</span></li>
+</ul>
+<hr />
+<p>All properties about expectation, variance, covariance, and
+correlation still hold as for discrete RVs:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(aX + b Y + c) = a
+\mathbb{E}(X) + b \mathbb{E}(Y) + c\)</span></li>
+<li><span class="math inline">\(\text{Var}(aX + b) = a^2
+\text{Var}(X)\)</span></li>
+<li><span class="math inline">\(\text{Cov}(X,X) =
+\text{Var}(X)\)</span></li>
+<li><span class="math inline">\(\text{Cov}(X,Y) =
+\text{Cov}(Y,X)\)</span></li>
+<li><span class="math inline">\(\text{Cov}(aX + b, Y) = a
+\text{Cov}(X,Y)\)</span></li>
+<li><span class="math inline">\(\text{Var}(X+Y) = \text{Var}(X) + 2
+\text{Cov}(X,Y) + \text{Var}(Y)\)</span></li>
+</ul>
+<hr />
+<p>If <span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are <strong>independent</strong>,
+then</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}(XY) = \mathbb{E}(X)
+\mathbb{E}(Y)\)</span>.</li>
+<li><span class="math inline">\(\text{Cov}(X,Y) = 0\)</span>.</li>
+<li><span class="math inline">\(\text{Corr}(X,Y) = 0\)</span>.</li>
+</ul>
+<p><strong>Warning:</strong> Neither of these implies <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are independent in general!</p>
+<hr />
+<h3 id="uniform-distribution">Uniform distribution</h3>
+<p>Let <span class="math inline">\(a&lt;b\)</span> be real numbers. We
+say <span class="math inline">\(X \sim \text{Uniform}(a,b)\)</span> if
+its pdf is <span class="math display">\[ p(x) = \begin{cases}
+\frac{1}{b-a}, &amp; \text{if~} a &lt; x &lt; b, \\ 0, &amp;
+\text{elsewhere}. \end{cases} \]</span></p>
+<p>We find <span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp; = \int_{a}^{b}x p(x) dx = \int_{a}^{b} \frac{x}{b-a}
+dx = \frac{a+b}{2} \\
+    \mathbb{E}(X^2) &amp; = \int_{a}^{b}x^2 p(x) dx = \int_{a}^{b}
+\frac{x^2}{b-a} dx = \frac{a^2+ab+b^2}{3} \\
+    \text{Var}(X) &amp; = \mathbb{E}(X^2) - (\mathbb{E}(X))^2 =
+\frac{(b-a)^2}{12}
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="affine-transform-of-uniform-rv">Affine transform of uniform
+RV</h3>
+<p>If <span class="math inline">\(X \sim \text{Uniform}(a,b)\)</span>
+and <span class="math display">\[ U = \frac{X-a}{b-a} \quad \text{or
+equivalently} \quad X = a + (b-a)U , \]</span> then <span
+class="math inline">\(U \sim \text{Uniform}(0,1)\)</span>.</p>
+<p>We call <span class="math inline">\(U\)</span> the standard uniform
+RV. Notice that <span class="math display">\[ \mathbb{E}(U) =
+\frac{1}{2}, \qquad \text{Var}(U) = \frac{1}{12}\]</span></p>
+<hr />
+<h3 id="exponential-distribution">Exponential distribution</h3>
+<p>We say <span class="math inline">\(X \sim
+\text{Exponential}(\lambda)\)</span> if its pdf is <span
+class="math display">\[ p(x) = \begin{cases} \lambda e^{-\lambda x},
+&amp; \text{if~} x&gt;0, \\ 0, &amp; \text{elsewhere}. \end{cases}
+\]</span></p>
+<p>We can find its cdf is <span class="math display">\[ F(x) =
+\begin{cases} 1- e^{-\lambda x}, &amp; \text{if~} x&gt;0, \\ 0, &amp;
+\text{elsewhere}. \end{cases} \]</span></p>
+<p><strong>Remark.</strong> Exponential distribution is often used to
+model waiting time, failure time, etc.</p>
+<hr />
+<p>Suppose <span class="math inline">\(X \sim
+\text{Exponential}(\lambda)\)</span>. Using integration by parts, we
+find <span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp; = \int_{-\infty}^{\infty} x p(x) dx =
+\int_{0}^{\infty} x \lambda e^{-\lambda x} dx = \frac{1}{\lambda}\\
+\mathbb{E}(X^2) &amp; = \int_{-\infty}^{\infty} x^2 p(x) dx =
+\int_{0}^{\infty} x^2 \lambda e^{-\lambda x} dx = \frac{2}{\lambda^2} \\
+\text{Var}(X) &amp; = \mathbb{E}(X^2) - (\mathbb{E}(X))^2 =
+\frac{1}{\lambda^2}
+\end{aligned}
+\]</span></p>
+<hr />
+<h3
+id="connection-between-textexponentiallambda-and-textpoissonlambda">Connection
+between <span class="math inline">\(\text{Exponential}(\lambda)\)</span>
+and <span class="math inline">\(\text{Poisson}(\lambda)\)</span></h3>
+<p>Fix a unit time period, and suppose a certain event occurs
+independently for <span class="math inline">\(\lambda\)</span> times on
+average during this period. Let <span class="math inline">\(Y\)</span>
+be the number of events during this time period. We know <span
+class="math inline">\(Y \sim \text{Poisson}(\lambda)\)</span>.</p>
+<p><strong>Then the time between any two consecutive events follows
+<span
+class="math inline">\(\text{Exponential}(\lambda)\)</span>.</strong></p>
+<p>Proof sketch: Let <span class="math inline">\(X_1,X_2,\dots
+\stackrel{\text{iid}}{\sim} \text{Exponential}(\lambda)\)</span> be the
+time gaps between two events, and <span class="math inline">\(Y \sim
+\text{Poisson}(\lambda)\)</span> be the number of events. Then we just
+need to show for any <span class="math inline">\(n=0,1,\dots\)</span>
+there is <span class="math display">\[ P(Y=n) = P\biggl(
+\sum_{i=1}^{n+1} X_i &gt; 1 ~\text{and}~ \sum_{i=1}^{n}X_i \le 1 \biggr)
+\]</span> Note the joint pdf of <span
+class="math inline">\(X_1,\dots,X_n\)</span> is <span
+class="math inline">\(\lambda^n e^{-\lambda \sum_{i=1}^{n} x_i}\)</span>
+for all <span class="math inline">\(n \ge 1\)</span> and <span
+class="math inline">\(x_i &gt; 0\)</span>.</p>
+<hr />
+<p>To show this equation, we calculate the right-hand-side: We just need
+to integrate the joint pdf of <span
+class="math inline">\((X_1,\dots,X_{n+1})\)</span> over the domain <span
+class="math display">\[ \Bigl(\sum_{i=1}^{n+1} x_i &gt; 1 \Bigr) \bigcap
+\Bigl(\sum_{i=1}^{n} x_i \le 1 \Bigr)  \subset \mathbb{R}^{n+1}_{+},
+\]</span> which yields <span class="math display">\[ \int_{0 \le
+\sum_{i=1}^{n} x_i \le 1} \lambda^n e^{-\lambda \sum_{i=1}^{n} x_i}
+\Bigl(\int_{1 - \sum_{i=1}^{n} x_i}^{\infty} \lambda e^{-\lambda
+x_{n+1}} dx_{n+1} \Bigr) (dx_n \cdots dx_1)\]</span> After integration,
+we find this is <span class="math inline">\(\frac{\lambda^n
+e^{-\lambda}}{n!}\)</span>, which is exactly the left-hand-side <span
+class="math inline">\(P(Y=n)\)</span>.</p>
+<hr />
+<p><strong>Example.</strong> A printer receives on average 3 jobs per
+hour. Find the expected time between two consecutive jobs and the
+probability that a new job will be received in 5 minutes.</p>
+<p><strong>Solution.</strong> Let <span class="math inline">\(X\)</span>
+be the number of jobs received in 1 hour. Then <span
+class="math inline">\(X \sim \text{Poisson}(3)\)</span>. Let <span
+class="math inline">\(Y\)</span> be the time between two consecutive
+jobs, then <span class="math inline">\(Y \sim
+\text{Exponential}(3)\)</span>. Therefore <span class="math display">\[
+\begin{aligned}
+\mathbb{E}(Y) = \frac{1}{3}.
+\end{aligned}
+\]</span> Since 5 minutes is <span
+class="math inline">\(\frac{1}{12}\)</span> hour, we get <span
+class="math display">\[
+\begin{aligned}
+P\Bigl(Y \le \frac{1}{12} \Bigr) = F_Y\Bigl(\frac{1}{12}\Bigr) = 1 -
+e^{-3\cdot \frac{1}{12}} = 1 - e^{-\frac{1}{4}}
+\end{aligned}
+\]</span> where <span class="math inline">\(F_Y\)</span> is the cdf of
+<span class="math inline">\(Y\)</span>.</p>
+<hr />
+<h3 id="gamma-distribution">Gamma distribution</h3>
+<p>We say <span class="math inline">\(X \sim
+\text{Gamma}(\alpha,\lambda)\)</span> with shape <span
+class="math inline">\(\alpha&gt;0\)</span> and frequency <span
+class="math inline">\(\lambda&gt;0\)</span> if it has pdf <span
+class="math display">\[ p(x) = \frac{\lambda^\alpha}{\Gamma(\alpha)}
+x^{\alpha-1}e^{- \lambda x} \quad \text{for all } x &gt; 0\]</span>
+where <span class="math inline">\(\Gamma\)</span> is called the
+<strong>Gamma function</strong> and defined by <span
+class="math display">\[ \Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1}
+e^{-t} dt \]</span> for any <span class="math inline">\(\alpha \ge
+1\)</span>.</p>
+<hr />
+<h4 id="properties-of-gamma-function-gamma">Properties of Gamma function
+<span class="math inline">\(\Gamma\)</span></h4>
+<p><span class="math display">\[
+\Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1} e^{-t} dt
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\Gamma\)</span> ensures the unity of
+<span class="math inline">\(p\)</span>: <span class="math display">\[
+\int_{0}^{\infty} \lambda^{\alpha} x^{\alpha-1} e^{-\lambda x} dx =
+\int_{0}^{\infty} (\lambda x)^{\alpha-1} e^{-(\lambda x)} d(\lambda x) =
+\int_{0}^{\infty} t^{\alpha-1} e^{-t}  dt = \Gamma(\alpha)
+\]</span></p></li>
+<li><p>For any <span class="math inline">\(\alpha \ge 1\)</span>, there
+is <span class="math display">\[
+\Gamma(\alpha+1) = \int_{0}^{\infty} t^{\alpha} e^{-t}dt = -t^\alpha
+e^{-t} \Big\vert_{0}^{\infty} + \alpha \int_{0}^{\infty} t^{\alpha-1}
+e^{-t} dt = \alpha \Gamma(\alpha)
+\]</span></p></li>
+<li><p>Easy to see <span class="math inline">\(\Gamma(1) = 1\)</span>.
+By the last property, there is <span class="math inline">\(\Gamma(n) =
+(n-1)!\)</span> for all <span
+class="math inline">\(n&gt;1\)</span>.</p></li>
+</ul>
+<hr />
+<h4 id="expectation-and-variance-of-textgammaalphalambda">Expectation
+and Variance of <span
+class="math inline">\(\text{Gamma}(\alpha,\lambda)\)</span></h4>
+<p>Suppose <span class="math inline">\(X \sim
+\text{Gamma}(\alpha,\lambda)\)</span>. We find <span
+class="math display">\[
+\mathbb{E}(X) = \int_{0}^{\infty} x p(x) dx = \int_{0}^{\infty} x
+\frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1}e^{- \lambda x} dx =
+\frac{\Gamma(\alpha+1)}{\lambda \Gamma(\alpha)} \int_{0}^{\infty}
+\frac{\lambda^{\alpha+1}}{\Gamma(\alpha + 1)} x^{(\alpha+1)-1}e^{-
+\lambda x} dx = \frac{\alpha}{\lambda}
+\]</span></p>
+<p>We also find <span class="math display">\[
+\mathbb{E}(X^2) = \int_{0}^{\infty} x^2 p(x) dx = \int_{0}^{\infty} x
+\frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1}e^{- \lambda x} dx =
+\frac{\Gamma(\alpha+2)}{\lambda^2 \Gamma(\alpha)} \int_{0}^{\infty}
+\frac{\lambda^{\alpha+2}}{\Gamma(\alpha + 2)} x^{(\alpha+2)-1}e^{-
+\lambda x} dx = \frac{\alpha(\alpha+1)}{\lambda^2}
+\]</span></p>
+<p>Therefore <span class="math display">\[ \text{Var}(X) =
+\mathbb{E}(X^2) - (\mathbb{E}(X))^2 =
+\frac{\alpha(\alpha+1)}{\lambda^2}- \frac{\alpha^2}{\lambda^2} =
+\frac{\alpha}{\lambda^2} \]</span></p>
+<hr />
+<p>pdf of Gamma<span class="math inline">\((\alpha, \lambda)\)</span>
+with a fixed frequency <span class="math inline">\(\lambda\)</span> and
+varying shape <span class="math inline">\(\alpha\)</span></p>
+<p><img src="./figs/ch04/fig4-5_gamma_pdf.png" alt="Gamma distribution" width="600"></p>
+<hr />
+<h3 id="moment-generating-function">Moment Generating Function</h3>
+<p>Let <span class="math inline">\(X\)</span> be a RV. The
+<strong>moment generating function</strong> (MGF) of <span
+class="math inline">\(X\)</span> is defined by <span
+class="math display">\[ G_X(t) = \mathbb{E}(e^{tX}) =
+\int_{-\infty}^{\infty} e^{tx}p(x) dx \]</span> for any <span
+class="math inline">\(t &gt; 0\)</span>. The name came from the fact
+that <span class="math display">\[ \frac{d^k}{dt^k} G_X(t)
+\Big\vert_{t=0} = \mathbb{E}(X^k)  \]</span> for all <span
+class="math inline">\(k = 1,\dots,\)</span>, where <span
+class="math inline">\(\mathbb{E}(X^k)\)</span> is called the
+<strong><span class="math inline">\(k\)</span>-th moment of <span
+class="math inline">\(X\)</span></strong>.</p>
+<p><strong>Remarks.</strong> - Two RVs with the same MGF have identical
+<span class="math inline">\(p\)</span>. - If <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are independent, then <span
+class="math inline">\(G_{X+Y}(t) = G_X(t)G_Y(t)\)</span>.</p>
+<hr />
+<p><strong>Claim.</strong> If <span class="math inline">\(X_1,\dots, X_n
+\stackrel{\text{iid}}{\sim} \text{Exponential}(\lambda)\)</span>, then
+<span class="math display">\[ \sum_{i=1}^{n} X_i \sim \text{Gamma}(n,
+\lambda) \]</span></p>
+<p><strong>Proof.</strong> Notice the MGF of <span
+class="math inline">\(X_i \sim \text{Exponential}(\lambda)\)</span> is
+<span class="math display">\[ G_{X_i}(t) = \mathbb{E}(e^{tX_i}) =
+\int_{0}^{\infty} e^{tx} \lambda e^{-\lambda x} dx =
+\frac{\lambda}{\lambda - t} \]</span> Since <span
+class="math inline">\(X_1,\dots, X_n\)</span> are independent, we get
+<span class="math display">\[ G_{\sum_{i=1}^{n} X_i}(t) =
+\prod_{i=1}^{n} G_{X_i}(t) = \frac{\lambda^n}{(\lambda-t)^{n}} \]</span>
+which is exactly the MGF of <span
+class="math inline">\(\text{Gamma}(n,\lambda)\)</span>.</p>
+<hr />
+<h4 id="connection-between-gamma-and-poisson-distributions">Connection
+between Gamma and Poisson distributions</h4>
+<p>For any <span class="math inline">\(n \in \mathbb{N}\)</span>, <span
+class="math inline">\(\lambda&gt;0\)</span>, and <span
+class="math inline">\(t&gt;0\)</span>, let <span class="math display">\[
+T \sim \text{Gamma}(n,\lambda), \qquad X \sim \text{Poisson}(\lambda t)
+\]</span></p>
+<p>Suppose an event occurs at frequency <span
+class="math inline">\(\lambda\)</span> and consider a time period of
+length <span class="math inline">\(\lambda t\)</span>. Then <span
+class="math display">\[
+\begin{aligned}
+(T&gt;t) &amp; = \text{It takes longer than $t$ to see $n$ events} \\
+    (X &lt; n) &amp; = \text{There are fewer than $n$ events occur
+during $\lambda t$}
+\end{aligned}
+\]</span> These two cases are identical! Hence <span
+class="math inline">\((T&gt;t) = (X&lt;n)\)</span> and <span
+class="math display">\[P(T&gt;t) = P(X&lt;n) = F_X(n-1) \quad \text{and}
+\quad P(T \le t) = P(X\ge n) = F_X(n)\]</span> where <span
+class="math inline">\(F_X\)</span> is the cdf of <span
+class="math inline">\(X \sim \text{Poisson}(\lambda t)\)</span>.</p>
+<p><strong>Remark.</strong> This shows the relation between the cdf of
+Poisson and Gamma distributions, but be careful about the choices of
+<span class="math inline">\(n,\lambda,t\)</span> when using it.</p>
+<hr />
+<h3 id="two-special-cases-of-gamma-distribution">Two special cases of
+Gamma distribution</h3>
+<ul>
+<li><span class="math inline">\(\text{Gamma}(1,\lambda) =
+\text{Exponential}(\lambda)\)</span></li>
+<li><span
+class="math inline">\(\text{Gamma}(\frac{\nu}{2},\frac{1}{2})\)</span>
+is called the <strong>chi-square distribution with degrees of freedom
+<span class="math inline">\(\nu\)</span></strong>, denoted by <span
+class="math inline">\(\chi_{\nu}^2\)</span>.
+<ul>
+<li>If <span class="math inline">\(Y=\sum_{i=1}^{n} Z_i^2\)</span> where
+<span class="math inline">\(Z_1,\dots,Z_n \stackrel{\text{iid}}{\sim}
+\mathcal{N}(0,1)\)</span>, then <span class="math inline">\(Y \sim
+\chi_n^2\)</span>.</li>
+<li>We will introduce the Gaussian <span
+class="math inline">\(\mathcal{N}\)</span> next, and more use of <span
+class="math inline">\(\chi_\nu^2\)</span> in Chapter 9.</li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="gaussian-distribution-aka-normal-distribution">Gaussian
+distribution (aka Normal distribution)</h3>
+<p>We say <span class="math inline">\(X \sim
+\mathcal{N}(\mu,\sigma^2)\)</span> if it has pdf <span
+class="math display">\[ p(x) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-
+\frac{(x-\mu)^2}{2\sigma^2}} \]</span> for all <span
+class="math inline">\(x \in \mathbb{R}\)</span>.</p>
+<p>Next we show <span class="math display">\[ \mathbb{E}(X) = \mu,
+\qquad  \text{Var}(X) = \sigma^2 \]</span></p>
+<hr />
+<h4 id="expectation-of-mathcalnmusigma2">Expectation of <span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span></h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp;= \int_{-\infty}^{\infty} x p(x) dx =
+\int_{-\infty}^{\infty} (x-\mu+\mu) \frac{1}{\sqrt{2\pi} \sigma}
+e^{-\frac{(x-\mu)^2}{2 \sigma^2}} dx\\
+&amp;= \int_{-\infty}^{\infty} (x-\mu) \frac{1}{\sqrt{2\pi} \sigma}
+e^{-\frac{(x-\mu)^2}{2 \sigma^2}} dx + \mu \int_{-\infty}^{\infty}
+\frac{1}{\sqrt{2\pi} \sigma} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} dx\\
+&amp; = \sigma \int_{-\infty}^{\infty}
+\underbrace{z\frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}}_{\text{odd
+function}} dz + \mu \int_{-\infty}^{\infty}\underbrace{
+\frac{1}{\sqrt{2\pi} \sigma} e^{-\frac{(x-\mu)^2}{2 \sigma^2}}
+}_{\text{pdf of } \mathcal{N}(\mu,\sigma^2)} dx \\
+&amp; = 0 + \mu \cdot 1 \\ &amp; = \mu
+\end{aligned}
+\]</span> where the change of variable <span class="math inline">\(z =
+\frac{x -\mu}{\sigma}\)</span> is applied in the 3rd line.</p>
+<hr />
+<h4 id="variance-of-mathcalnmusigma2">Variance of <span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span></h4>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Var}(X) &amp;= \int_{-\infty}^{\infty} (x-\mu)^2 p(x) dx =
+\int_{-\infty}^{\infty} (x-\mu)^2 \frac{1}{\sqrt{2\pi} \sigma}
+e^{-\frac{(x-\mu)^2}{2 \sigma^2}} dx\\
+&amp; = \int_{-\infty}^{\infty} \sigma^2 z^2 \frac{1}{\sqrt{2\pi}}
+e^{-\frac{z^2}{2}}  dz = - \frac{\sigma^2}{\sqrt{2\pi}}
+\int_{-\infty}^{\infty}  z \, d e^{-\frac{z^2}{2}}\\
+&amp;= - \frac{\sigma^2}{\sqrt{2\pi}}\Bigl( \underbrace{  \left. z
+e^{-\frac{z^2}{2}} \right|_{-\infty}^{\infty} }_{0}
+-  \int_{-\infty}^{\infty} e^{-\frac{z^2}{2}} dz \Bigr) \\ &amp;=
+\sigma^2 \int_{-\infty}^{\infty} \underbrace{\frac{1}{\sqrt{2\pi}}
+e^{-\frac{z^2}{2}}}_{\text{pdf of }\mathcal{N}(0,1)} dz \\ &amp; =
+\sigma^2
+\end{aligned}
+\]</span></p>
+<hr />
+<h4 id="pdf-of-mathcalnmusigma2">pdf of <span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span></h4>
+<p><img src="./figs/ch04/fig4-6_gauss_pdf.png" alt="Gaussian distribution" width="600"></p>
+<hr />
+<h4 id="normalization-of-a-gaussian-rv">Normalization of a Gaussian
+RV</h4>
+<p>Let <span class="math inline">\(X \sim \mathcal{N}(\mu,
+\sigma^2)\)</span> and <span class="math inline">\(Z = \frac{X -
+\mu}{\sigma}\)</span>, then <span class="math inline">\(Z \sim
+\mathcal{N}(0,1)\)</span>.</p>
+<p><span class="math inline">\(Z\)</span> is called the standard
+Gaussian RV. Its pdf is <span class="math display">\[ p_Z(z) =
+\frac{1}{\sqrt{2\pi}}  e^{-\frac{z^2}{2}} \]</span> (We can show the
+unity of <span class="math inline">\(p_Z\)</span> and hence of any <span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> pdf.)</p>
+<p>The cdf of <span class="math inline">\(Z\)</span> is by convention
+denoted as <span class="math display">\[ \Phi(z) = P(Z \le z)=
+\int_{-\infty}^{z} \frac{1}{\sqrt{2\pi}}  e^{-\frac{t^2}{2}} dt
+\]</span> The value table of <span class="math inline">\(\Phi\)</span>
+is easy to find.</p>
+<hr />
+<p><strong>Example.</strong> Suppose <span class="math inline">\(X \sim
+\mathcal{N}(900, 200^2)\)</span>. Find <span class="math inline">\(P(600
+\le X \le 1200)\)</span>.</p>
+<p><strong>Solution.</strong> We apply a normalization <span
+class="math inline">\(Z = \frac{X-900}{200}\)</span> to get <span
+class="math display">\[
+\begin{aligned}
+P(600 \le X \le 1200)
+    &amp; = P\Bigl( \frac{600-900}{200} \le \frac{X-900}{200} \le
+\frac{1200-900}{200}\Bigr) \\
+    &amp; = P(-1.5 \le Z \le 1.5) \\
+    &amp; = \Phi(1.5) - \Phi(-1.5) \\
+    &amp; = \Phi(1.5) - (1 - \Phi(1.5)) \\
+    &amp; = 2 \Phi(1.5) - 1 \\
+    &amp; \approx 0.8664
+\end{aligned}
+\]</span></p>
+<hr />
+<p><strong>Example.</strong> Suppose <span class="math inline">\(X \sim
+\mathcal{N}(900, 200^2)\)</span>. Find <span
+class="math inline">\(x\)</span> such that <span
+class="math inline">\(P(X\le x) = 0.03\)</span>.</p>
+<p><strong>Solution.</strong> We apply a normalization <span
+class="math inline">\(Z = \frac{X-900}{200}\)</span> to get <span
+class="math display">\[
+\begin{aligned}
+0.03
+    &amp; = P(X \le x) \\
+    &amp; = P\Bigl( \frac{X-900}{200} \le \frac{x-900}{200}\Bigr) \\
+    &amp; = P\Bigl( Z \le \frac{x-900}{200}\Bigr) \\
+    &amp; = \Phi\Bigl(\frac{x-900}{200} \Bigr) \\
+\end{aligned}
+\]</span> We find that <span
+class="math inline">\(\frac{x-900}{200}=-1.88\)</span> and hence <span
+class="math inline">\(x = 524\)</span>.</p>
+<hr />
+<h3 id="central-limit-theorem-clt">Central Limit Theorem (CLT)</h3>
+<p>Let <span class="math inline">\(X_1,\dots,X_n\)</span> be independent
+RVs (not necessarily the same distribution), all of which have
+expectation <span class="math inline">\(\mu\)</span> and variance <span
+class="math inline">\(\sigma^2\)</span>. Let <span
+class="math inline">\(\overline{X} = \frac{1}{n}\sum_{i=1}^{n}
+X_i\)</span>. Then <span class="math display">\[
+\mathbb{E}(\overline{X}) = \mu, \qquad \text{Var}(\overline{X}) =
+\frac{\sigma^2}{n} . \]</span> Moreover, for any <span
+class="math inline">\(z \in \mathbb{R}\)</span>, <span
+class="math display">\[ P\Bigl( \frac{\overline{X} -
+\mu}{\sigma/\sqrt{n}} \le z \Bigr) \to \Phi(z) \quad \text{as} \quad n
+\to \infty\]</span></p>
+<p>This effectively implies that <span
+class="math inline">\(\frac{\overline{X} -
+\mu}{\sigma/\sqrt{n}}\)</span> approximately follows <span
+class="math inline">\(\mathcal{N}(0,1)\)</span> when <span
+class="math inline">\(n\)</span> is large (typically <span
+class="math inline">\(n\ge 30\)</span>).</p>
+<hr />
+<p><strong>Example.</strong> Suppose <span
+class="math inline">\(X_1,\dots,X_{300}\)</span> are independent RVs,
+while they all have expectation 1 and standard deviation 0.5. Find the
+probability their sum is smaller than 330.</p>
+<p><strong>Solution.</strong> Let <span
+class="math inline">\(\overline{X}\)</span> be their average. Then <span
+class="math inline">\(300 \overline{X}\)</span> is their sum. Then <span
+class="math display">\[
+\begin{aligned}
+P(300\overline{X} \le 330) &amp; = P\Bigl( \overline{X} \le
+\frac{330}{300} = 1.1 \Bigr) \\
+    &amp; = P\Bigl( \frac{\overline{X} - 1}{0.5/\sqrt{300}} \le
+\frac{1.1 - 1}{0.5/\sqrt{300}} = 2\sqrt{3}\Bigr) \\
+    &amp; = P(Z \le 2\sqrt{3}) \\
+    &amp; = \Phi(2\sqrt{3})
+\end{aligned}
+\]</span> where <span class="math inline">\(Z =
+\frac{\overline{X}-1}{0.5/\sqrt{300}} \sim \mathcal{N}(0,1)\)</span> by
+CLT.</p>
+<hr />
+<h4 id="gaussian-approximation-to-binomial-distribution">Gaussian
+approximation to Binomial distribution</h4>
+<p>Let <span class="math inline">\(S \sim
+\text{Binomial}(n,\theta)\)</span> with large <span
+class="math inline">\(n\)</span>. We can regard <span
+class="math display">\[ S = X_1 + \dots + X_n, \quad \text{where} \quad
+X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \text{Bernoulli}(\theta)
+\]</span> Then the sample mean <span class="math inline">\(\overline{X}
+= \frac{S}{n}\)</span> with <span
+class="math inline">\(\mathbb{E}(\overline{X}) = \theta\)</span> and
+<span class="math inline">\(\text{Var}(\overline{X}) =
+\frac{\theta(1-\theta)}{n}\)</span>. As <span
+class="math inline">\(n\)</span> is large, we have by CLT that <span
+class="math display">\[ \frac{S - n \theta}{\sqrt{n\theta(1-\theta)} } =
+\frac{\overline{X} - \theta}{\sqrt{\theta(1-\theta)/n}} \sim
+\mathcal{N}(0,1) \]</span> or equivalently <span class="math inline">\(S
+\sim \mathcal{N}(n \theta, n \theta(1-\theta))\)</span>.</p>
+<p>This implies <span class="math inline">\(\text{Binomial}(n,\theta)
+\approx \mathcal{N}(n\theta, n\theta(1-\theta))\)</span> when <span
+class="math inline">\(n\)</span> is large.</p>
+<!-- Recall $\text{Binomial}(n,\theta) \approx \text{Poisson}(n\theta)$ when $\theta$ is close to $0$, and $\text{Binomial}(n,\theta) \approx \text{Poisson}(n\theta)$ -->
+<hr />
+<h3 id="summary-of-continuous-distributions">Summary of continuous
+distributions:</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Distribution</th>
+<th style="text-align: center;"><span class="math inline">\(x\)</span>
+values</th>
+<th style="text-align: center;">pdf <span
+class="math inline">\(p(x)\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(\mathbb{E}(X)\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(\text{Var}(X)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Uniform}(a,b)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\((a,b)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{b-a}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{a+b}{2}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{(b-a)^2}{12}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Exponential}(\lambda)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\((0,\infty)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\lambda
+e^{-\lambda x}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{\lambda}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{\lambda^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Gamma}(\alpha,\lambda)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\((0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{\lambda^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}
+e^{-\lambda x}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{\alpha}{\lambda}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{\alpha}{\lambda^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\((-\infty,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{\sqrt{2\pi} \sigma}
+e^{-\frac{(x-\mu)^2}{2 \sigma^2}}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\mu\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\sigma^2\)</span></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

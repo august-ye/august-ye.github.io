@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ch03_web</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<!-- ---
+marp: true
+paginate: true
+# size: 4:3 
+# class: invert
+math: mathjax
+
+title: "Chapter 3 Discrete Random Variables and Distributions"
+author: "Xiaojing Ye"
+lang: en-US
+date: 2026-08-16
+---
+
+$$
+\newcommand{\ex}{\mathbb{E}}
+\newcommand{\var}{\text{Var}}
+\newcommand{\cov}{\text{Cov}}
+\newcommand{\corr}{\text{Corr}}
+\newcommand{\Ncal}{\mathcal{N}}
+\newcommand{\Xhat}{\widehat{X}}
+\newcommand{\Qhat}{\widehat{Q}}
+\newcommand{\Xbar}{\overline{X}}
+\newcommand{\Ybar}{\overline{Y}}
+\newcommand{\phat}{\hat{p}}
+\newcommand{\Mhat}{\widehat{M}}
+\newcommand{\bernoullidist}{\text{Bernoulli}}
+\newcommand{\binomdist}{\text{Binomial}}
+\newcommand{\poissondist}{\text{Poisson}}
+\newcommand{\geodist}{\text{Geometric}}
+\newcommand{\IQRhat}{\widehat{\text{IQR}}}
+\newcommand{\muhat}{\hat{\mu}}
+\newcommand{\thetahat}{\hat{\theta}}
+\newcommand{\iid}{\stackrel{\text{iid}}{\sim}}
+\newcommand{\sumin}{\frac{1}{n}\sum_{i=1}^{n}}
+\newcommand{\sumi}{\sum_{i=1}^{n}}
+\newcommand{\eqalign}[1]{\begin{aligned}#1\end{aligned}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+$$ -->
+<!-- # Applied Probability and Statistics -->
+<h1 id="discrete-random-variables-and-distributions">Discrete Random
+Variables and Distributions</h1>
+<p>Xiaojing Ye</p>
+<p>Department of Mathematics and Statistics</p>
+<p>Georgia State University</p>
+<hr />
+<h2 id="random-variables">Random Variables</h2>
+<p>In probability theory, a <strong>random variable</strong> (RV) <span
+class="math inline">\(X\)</span> is a function of outcomes.</p>
+<p>Recall</p>
+<ul>
+<li><span class="math inline">\(\Omega\)</span> is a sample space of
+outcomes.</li>
+<li><span class="math inline">\(\omega\)</span> denotes some specified
+outcome.</li>
+<li><span class="math inline">\(X(\omega)\)</span> is a real value for
+every <span class="math inline">\(\omega \in \Omega\)</span>.</li>
+<li><span class="math inline">\(P(X(\omega)=x)\)</span> is the
+probability <span class="math inline">\(X(\omega)=x\)</span>.</li>
+</ul>
+<p>We only consider discrete RVs in this chapter, namely the set of
+possible values of <span class="math inline">\(X(\omega)\)</span> is
+finite or countable.</p>
+<hr />
+<h2 id="a-tease-of-discrete-versus-continuous-rvs">A tease of discrete
+versus continuous RVs</h2>
+<p><strong>Discrete RV examples:</strong></p>
+<ul>
+<li>Number of Heads by tossing a coin <span
+class="math inline">\(n\)</span> times.</li>
+<li>Number of tosses to get the first Head.</li>
+<li>Number of files infected by virus.</li>
+</ul>
+<p><strong>Continuous RV examples:</strong></p>
+<ul>
+<li>Software installation time.</li>
+<li>Lifetime of a bulb.</li>
+<li>A real number randomly drawn from an interval.</li>
+</ul>
+<hr />
+<h4 id="example">Example</h4>
+<p>Toss a coin 3 times and let <span class="math inline">\(X\)</span>
+denote the number of heads. Find <span
+class="math inline">\(\Omega\)</span> with all possible outcomes <span
+class="math inline">\(\omega\)</span> and values of <span
+class="math inline">\(X(\omega)\)</span>.</p>
+<h4 id="solution">Solution</h4>
+<p>We denote Head and Tail by H and T. Tossing the coin 3 times may have
+8 outcomes:</p>
+<p><span class="math display">\[
+\text{(T,T,T), (T,T,H), (T,H,T), (T,H,H),}
+\]</span></p>
+<p><span class="math display">\[
+\text{(H,T,T), (H,T,H), (H,H,T), (H,H,H).}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\Omega\)</span> is the set of these 8
+outcomes.</li>
+<li><span class="math inline">\(\omega\)</span> can be any of these 8
+outcomes.</li>
+<li>If <span class="math inline">\(\omega =\)</span> (T, H, T), then
+<span class="math inline">\(X(\omega) =1\)</span>, and so on.</li>
+<li>0, 1, 2, and 3 are all possible values of <span
+class="math inline">\(X(\omega)\)</span>.</li>
+</ul>
+<hr />
+<h3 id="distribution-functions">Distribution Functions</h3>
+<p>We often omit <span class="math inline">\(\omega\)</span> because
+<span class="math inline">\(X\)</span> is often clear from the context.
+Note <span class="math inline">\(X=x\)</span> may be a set of many
+outcomes. For the example above, <span
+class="math inline">\(X=2\)</span> is the set {(H,H,T),
+(H,T,H),(T,H,H)}.</p>
+<p>We call <span class="math inline">\(p\)</span> the
+<strong>probability mass function</strong> (pmf) of <span
+class="math inline">\(X\)</span> if <span class="math display">\[ p(x) =
+P(X=x)\]</span> for every possible value <span
+class="math inline">\(x\)</span> of <span
+class="math inline">\(X\)</span>.</p>
+<p>We call <span class="math inline">\(F\)</span> the <strong>cumulative
+distribution funtion</strong> (cdf) of <span
+class="math inline">\(X\)</span> if <span class="math display">\[ F(x) =
+P(X\le x)\]</span> for any <span class="math inline">\(x \in
+\mathbb{R}\)</span>.</p>
+<hr />
+<h4 id="properties-of-pmf">Properties of pmf</h4>
+<ul>
+<li><span class="math inline">\(p(x) \ge 0\)</span>.</li>
+<li><span class="math inline">\(p(x) &gt; 0\)</span> if and only if
+<span class="math inline">\(x\)</span> is a possible value of <span
+class="math inline">\(X\)</span>.</li>
+<li><span class="math inline">\(\sum_{x} p(x) = 1\)</span> (the sum is
+over all possible values of <span
+class="math inline">\(X\)</span>).</li>
+</ul>
+<h4 id="properties-of-cdf">Properties of cdf</h4>
+<ul>
+<li><span class="math inline">\(F\)</span> is non-decreasing.</li>
+<li>(Discrete RV only) <span class="math inline">\(F\)</span> is
+staircase-like and only jumps at possible values of <span
+class="math inline">\(X\)</span>.</li>
+<li>(Discrete RV only) <span class="math inline">\(F(x) = P(X \le x) =
+\sum_{k \le x} P(X=k)\)</span>.</li>
+<li><span class="math inline">\(0 \le F(x) \le 1\)</span> for all <span
+class="math inline">\(x \in \mathbb{R}\)</span>.</li>
+<li>The trend of <span class="math inline">\(F\)</span>: <span
+class="math display">\[ \lim_{x \to -\infty} F(x) = 0, \qquad \lim_{x
+\to +\infty} F(x) = 1 \]</span></li>
+</ul>
+<hr />
+<h4 id="example-1">Example</h4>
+<p>Toss a <strong>fair</strong> coin 3 times. Let <span
+class="math inline">\(X\)</span> be the number of heads. Find pmf <span
+class="math inline">\(p\)</span> and cdf <span
+class="math inline">\(F\)</span>.</p>
+<h4 id="solution-1">Solution</h4>
+<ul>
+<li><span class="math inline">\(X=0\)</span> means {(T,T,T)}, hence
+<span class="math inline">\(p(0) = \frac{1}{8}\)</span>.</li>
+<li><span class="math inline">\(X=1\)</span> means
+{(T,T,H),(T,H,T),(H,T,T)}, hence <span class="math inline">\(p(1) =
+\frac{3}{8}\)</span>.</li>
+<li>Similarly <span class="math inline">\(p(2) = \frac{3}{8}\)</span>,
+<span class="math inline">\(p(3) = \frac{1}{8}\)</span>.</li>
+</ul>
+<p>The pmf <span class="math inline">\(p\)</span> is</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(x\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(1\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(3\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(p(x)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{8}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{3}{8}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{3}{8}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{8}\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="solution-cont">Solution (cont)</h4>
+<p>The cdf <span class="math inline">\(F\)</span> is <span
+class="math display">\[ F(x) = \begin{cases} 0, &amp; \text{if~} x &lt;
+0, \\ \frac{1}{8}, &amp; \text{if~} 0 \le x &lt; 1, \\ \frac{4}{8},
+&amp; \text{if~} 1 \le x &lt; 2, \\ \frac{7}{8}, &amp; \text{if~} 2 \le
+x &lt; 3, \\ 1, &amp; \text{if~} x \ge 3. \end{cases} \]</span></p>
+<p><strong>Remark:</strong> The cdf of any discrete RV is a
+non-decreasing staircase function like this.</p>
+<hr />
+<h4 id="solution-cont-1">Solution (cont)</h4>
+<p>Plots of pmf <span class="math inline">\(p\)</span> and cdf <span
+class="math inline">\(F\)</span>:</p>
+<!-- <figure>
+    <img src="./figs/ch03/fig3-1_pmf_cdf.png" width="700" atl="pmf and cdf">
+</figure> -->
+<figure>
+<img src="./figs/ch03/fig3-1_pmf_cdf.png" alt="pmf and cdf" />
+<figcaption aria-hidden="true">pmf and cdf</figcaption>
+</figure>
+<hr />
+<p><strong>Example.</strong> Let <span class="math inline">\(X\)</span>
+and <span class="math inline">\(Y\)</span> be two independent RVs with
+pmfs <span class="math inline">\(p_X\)</span> and <span
+class="math inline">\(p_Y\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(k\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(1\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(3\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(p_X(k)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.5\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.3\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.1\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(p_Y(k)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.7\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Find the pmf and cdf of <span
+class="math inline">\(Z=X+Y\)</span>.</p>
+<hr />
+<p><strong>Solution.</strong> We see <span
+class="math inline">\(Z\)</span> can take any integer between 0 and
+5.</p>
+<p>For the pmf <span class="math inline">\(p_Z\)</span>, we see for
+example <span class="math display">\[Z=X+Y=1 \quad \Longleftrightarrow
+\quad  \{(X=1,Y=0), (X=0,Y=1)\}\]</span> and thus <span
+class="math display">\[
+\begin{aligned}
+p_Z(1)
+= P(Z=1) &amp; = P(X=1,Y=0) + P(X=0,Y=1) \\
+&amp; = P(X=1)P(Y=0) + P(X=0)P(Y=1) \\
+&amp; =0.31
+\end{aligned}
+\]</span> We can compute <span class="math inline">\(p_Z\)</span> at
+other values similarly.</p>
+<hr />
+<p><strong>Solution (cont)</strong> The pmf of <span
+class="math inline">\(Z\)</span> is</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(k\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(1\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(3\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(4\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(5\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(p_Z(k)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.35\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.31\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.18\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.12\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.03\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.01\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The cdf of <span class="math inline">\(Z\)</span> is</p>
+<p><span class="math display">\[ F_Z(x) =
+\begin{cases}
+0, &amp; \text{if~} x &lt; 0, \\
+0.35, &amp; \text{if~} 0 \le x &lt; 1, \\
+0.66, &amp; \text{if~} 1 \le x &lt; 2, \\
+0.84, &amp; \text{if~} 2 \le x &lt; 3, \\
+0.96, &amp; \text{if~} 3 \le x &lt; 4, \\
+0.99, &amp; \text{if~} 4 \le x &lt; 5, \\
+1, &amp; \text{if~} x \ge 5. \\
+\end{cases} \]</span></p>
+<hr />
+<h4 id="joint-distribution">Joint distribution</h4>
+<p>In real-life, the RVs of interest are usually
+<strong>dependent</strong>. How they behave together?</p>
+<p>We call <span class="math inline">\(p_{X,Y}\)</span> the
+<strong>joint distribution</strong> of <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> if <span class="math display">\[
+p_{X,Y}(x,y) = P(X = x \text{~and~} Y = y)\]</span> for any <span
+class="math inline">\(x,y\)</span>.</p>
+<hr />
+<h4 id="joint-distribution-and-marginal-distribution">Joint distribution
+and marginal distribution</h4>
+<p>Note the relation between pmf <span
+class="math inline">\(p_X,p_Y\)</span> and <span
+class="math inline">\(p_{X,Y}\)</span>: <span class="math display">\[
+\begin{aligned}
+p_X(x) &amp; = P(X=x) = \sum_{y} P(X = x \text{~and~} Y = y) = \sum_{y}
+p_{X,Y}(x,y) \\ p_Y(y) &amp; = P(Y=y) = \sum_{x} P(X = x \text{~and~} Y
+= y) = \sum_x p_{X,Y}(x,y)
+\end{aligned}
+\]</span> We also call <span class="math inline">\(p_X\)</span> and
+<span class="math inline">\(p_Y\)</span> <strong>marginal
+distribution</strong> in this context.</p>
+<!-- 
+<figure>
+<img src="./figs/ch03/fig3-3_joint_marginal.png" width="500", atl="joint and marginal distributions">
+</figure> -->
+<figure>
+<img src="./figs/ch03/fig3-3_joint_marginal.png"
+alt="joint and marginal distributions" />
+<figcaption aria-hidden="true">joint and marginal
+distributions</figcaption>
+</figure>
+<hr />
+<p>We call <span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> <strong>independent</strong> if <span
+class="math display">\[ p_{X,Y}(x,y) = p_X(x) p_Y(y), \qquad \forall \,
+x , y . \]</span></p>
+<hr />
+<h4 id="expectation-aka-expected-value-mean-average">Expectation (aka
+Expected Value, Mean, Average)</h4>
+<p><strong>Example.</strong> Consider tossing a fair coin. Win $2 if
+Head. Lose $3 if Tail. What is the expected gain per toss?</p>
+<h4 id="intuition">Intuition</h4>
+<p>Imagine we toss it for <span class="math inline">\(n\)</span> times
+(<span class="math inline">\(n\)</span> very large), we expect both
+Heads and Tails appear <span class="math inline">\(\frac{n}{2}\)</span>
+times. So the total gain is <span class="math display">\[ 2 \times
+\frac{n}{2} + (-3) \times \frac{n}{2} = -\frac{n}{2}. \]</span> So the
+expected gain per toss is the total gain divided <span
+class="math inline">\(n\)</span>, which is <span
+class="math inline">\(-\frac{1}{2}\)</span>. This is the
+expectation.</p>
+<hr />
+<h4 id="expectation-aka-expected-value-mean-average-1">Expectation (aka
+Expected Value, Mean, Average)</h4>
+<p><strong>Definition.</strong> The <strong>expectation</strong> of a
+discrete RV <span class="math inline">\(X\)</span> is defined by <span
+class="math display">\[ \mathbb{E}(X) = \sum_{x} x p(x) \]</span> where
+the sum is over all possible values of <span
+class="math inline">\(X\)</span>.</p>
+<ul>
+<li>Shorthand notation: <span class="math inline">\(\mu_X\)</span>,
+<span class="math inline">\(\mu\)</span>.</li>
+<li>Expectation is a <strong>weighted sum</strong> of all possible
+values of <span class="math inline">\(X\)</span>.</li>
+<li>The weight of <span class="math inline">\(x\)</span> is <span
+class="math inline">\(p(x)\)</span>.</li>
+</ul>
+<hr />
+<p><strong>Example.</strong> Find <span
+class="math inline">\(\mathbb{E}(X)\)</span> of <span
+class="math inline">\(X\)</span> whose pmf is</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(x\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(1\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(3\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(p(x)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.5\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.3\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.1\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="solution-2">Solution</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) = \sum_{x=0}^{3} x p(x) &amp;
+= 0 \cdot p(0) + 1 \cdot p(1) + 2 \cdot p(2) + 3 \cdot p(3) \\
+&amp; = 0 \cdot 0.5 + 1 \cdot 0.3 + 2 \cdot 0.1 + 3 \cdot 0.1 \\
+&amp; = 0.8.
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="expectation-of-a-function">Expectation of a function</h3>
+<p>Let <span class="math inline">\(X\)</span> be a RV and <span
+class="math inline">\(Y=g(X)\)</span> for some function <span
+class="math inline">\(g\)</span>. Then <span class="math display">\[
+\mathbb{E}(Y) = \mathbb{E}(g(X)) = \sum_{x} g(x) p(x) \]</span></p>
+<ul>
+<li>Obvious when <span class="math inline">\(g\)</span> is
+one-to-one.</li>
+<li>In general, <span class="math inline">\(y = g(x)\)</span> gets the
+same weight <span class="math inline">\(p(x)\)</span> as <span
+class="math inline">\(x\)</span> does.</li>
+</ul>
+<hr />
+<p><strong>Linearity of expectation.</strong> For any RVs <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span>, and <span class="math inline">\(a,b,c
+\in \mathbb{R}\)</span>, there is <span
+class="math display">\[\mathbb{E}(aX + b Y + c) = a \mathbb{E}(X) + b
+\mathbb{E}(Y) + c\]</span>
+<!-- This holds for any linear combination of RVs. --></p>
+<h4 id="proof">Proof</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}(aX + bY + c)
+&amp; = \sum_{x} \sum_{y} (ax + by + c) P(X=x,Y=y) \\
+&amp; = a \sum_{x} \sum_{y} x P(X=x,Y=y) + b \sum_x \sum_y P(X=x,Y=y) +
+c \sum_x \sum_y P(X=x,Y=y)\\
+&amp; = a \sum_{x} x \Bigl(\sum_{y} P(X=x,Y=y) \Bigr) + b \sum_y y
+\Bigl(\sum_x P(X=x,Y=y) \Bigr) + c\\
+&amp; = a \sum_x x P(X=x) + b \sum_y y P(Y=y) + c\\
+&amp; = a \mathbb{E}(X) + b \mathbb{E}(Y) + c.
+\end{aligned}
+\]</span></p>
+<hr />
+<h4 id="expectation-of-product">Expectation of product</h4>
+<p><strong>If <span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are independent</strong>, then <span
+class="math display">\[ \mathbb{E}(XY) = \mathbb{E}(X) \mathbb{E}(Y)
+\]</span></p>
+<h4 id="proof-1">Proof</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}(XY)
+&amp; = \sum_{x} \sum_{y} (xy) P(X=x,Y=y) = \sum_{x} \sum_{y} (xy)
+P(X=x)P(Y=y) \\
+&amp; = \Bigl(\sum_{x} x P(X=x) \Bigr) \cdot \Bigl( \sum_{y} y P(Y=y)
+\Bigr) = \mathbb{E}(X) \mathbb{E}(Y).
+\end{aligned}
+\]</span></p>
+<p><strong>Warning:</strong> The converse is not necessarily true!</p>
+<hr />
+<h3 id="measure-of-uncertainty">Measure of uncertainty</h3>
+<p>The <strong>variance</strong> of <span
+class="math inline">\(X\)</span> is defined by <span
+class="math display">\[ \text{Var}(X) = \mathbb{E} \big( (X - \mu)^2
+\big) = \sum_x (x-\mu)^2 p(x) \]</span> Shorthand notations of variance:
+<span class="math inline">\(\sigma_X^2\)</span>, <span
+class="math inline">\(\sigma^2\)</span>.</p>
+<p>The <strong>standard deviation</strong> of <span
+class="math inline">\(X\)</span> is <span class="math display">\[ \sigma
+= \sqrt{\text{Var}(X)} \]</span> Sometimes also written as <span
+class="math inline">\(\text{std}(X)\)</span>.</p>
+<p><strong>Remark.</strong> <span
+class="math inline">\(\text{Var}(X)\)</span> is always non-negative.</p>
+<hr />
+<h4 id="claim">Claim</h4>
+<p><span class="math display">\[\text{Var}(X) = \mathbb{E}(X^2) -
+\mu^2\]</span></p>
+<h4 id="proof-2">Proof</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Var}(X) &amp; = \mathbb{E}( (X-\mu)^2) = \sum_x (x-\mu)^2 p(x) \\
+&amp; = \sum_x (x^2 - 2\mu x + \mu^2) p(x)  \\
+&amp; = \sum_x x^2 p(x) - 2\mu \sum_x x p(x) + \mu^2 \sum_x p(x) \\
+&amp; = \mathbb{E}(X^2) - 2\mu^2 + \mu^2 \\
+&amp; = \mathbb{E}(X^2) - \mu^2
+\end{aligned}
+\]</span></p>
+<hr />
+<h4 id="claim-1">Claim</h4>
+<p><span class="math display">\[ \text{Var}(aX + b) = a^2 \text{Var}(X)
+\]</span></p>
+<h4 id="proof-3">Proof</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\bigl( (aX + b)^2)
+&amp; = \mathbb{E}(a^2X^2 + 2ab X + b^2) = a^2 \mathbb{E}(X^2) + 2ab \mu
++ b^2 \\
+\bigl(\mathbb{E}(aX+b) \bigr)^2
+&amp; = (a\mu +b)^2 = a^2 \mu^2 + 2ab\mu + b^2
+\end{aligned}
+\]</span> Subtraction gives <span class="math display">\[
+\begin{aligned}
+\text{Var}(aX+b) &amp; = \mathbb{E}\bigl( (aX + b)^2) -
+\bigl(\mathbb{E}(aX+b)\bigr) \\
+    &amp; = a^2\mathbb{E}(X^2) - a^2 \mu^2 \\
+    &amp; = a^2 \text{Var}(X)
+\end{aligned}
+\]</span></p>
+<p><strong>Remark.</strong> <span class="math inline">\(b\)</span> is
+gone because it is an added constant and has no randomness.</p>
+<hr />
+<h3 id="covariance-between-two-rvs">Covariance between two RVs</h3>
+<p>The <strong>covariance</strong> of <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> is defined by <span
+class="math display">\[ \text{Cov}(X,Y) = \mathbb{E}\bigl(
+(X-\mu_X)(Y-\mu_Y) \bigr) \]</span></p>
+<p>We also see: <span class="math display">\[
+\begin{aligned}
+\text{Cov}(X,Y)
+    &amp; = \mathbb{E}\bigl( (X-\mu_X)(Y-\mu_Y) \bigr) \\
+    &amp; = \mathbb{E}\bigl( XY - \mu_X Y - \mu_Y X + \mu_X \mu_Y
+\bigr)\\
+    &amp; = \mathbb{E}(XY) - \mu_X \mu_Y - \mu_X \mu_Y + \mu_X \mu_Y  \\
+    &amp; = \mathbb{E}(XY) - \mu_X \mu_Y
+\end{aligned}
+\]</span></p>
+<p><strong>Important!</strong> If <span class="math inline">\(X\)</span>
+and <span class="math inline">\(Y\)</span> are independent, then <span
+class="math inline">\(\mathbb{E}(XY)=\mu_X\mu_Y\)</span> and <span
+class="math inline">\(\text{Cov}(X,Y) = 0\)</span>. <strong>However,
+<span class="math inline">\(\text{Cov}(X,Y)=0\)</span> does not
+necessarily imply <span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are independent</strong>.</p>
+<hr />
+<p><span class="math inline">\(\text{Cov}(X,Y)&gt;0\)</span> implies
+“larger <span class="math inline">\(X\)</span> suggests larger <span
+class="math inline">\(Y\)</span>” and etc.</p>
+<!-- 
+<figure>
+    <img src="./figs/ch03/fig3-5_covariance.png", atl="covariance">
+</figure> -->
+<figure>
+<img src="./figs/ch03/fig3-5_covariance.png" alt="covariance" />
+<figcaption aria-hidden="true">covariance</figcaption>
+</figure>
+<hr />
+<h4 id="properties-of-covariance">Properties of covariance</h4>
+<ul>
+<li><span class="math inline">\(\text{Cov}(X,X) =
+\text{Var}(X)\)</span></li>
+<li><span class="math inline">\(\text{Cov}(X,Y) =
+\text{Cov}(Y,X)\)</span></li>
+<li><span class="math inline">\(\text{Cov}(aX + b, Y) = a
+\text{Cov}(X,Y)\)</span></li>
+</ul>
+<p><strong>Proof.</strong> Try first two yourself. For the last one,
+there is <span class="math display">\[
+\begin{aligned}
+\text{Cov}(aX+b,Y)
+    &amp; = \mathbb{E}\bigl( (aX+b) Y \bigr) - \mathbb{E}(aX+b)
+\mathbb{E}(Y) \\
+    &amp; = \mathbb{E}(aXY + bY) - (a\mu_X + b) \mu_Y \\
+    &amp; = a \mathbb{E}(XY) + b\mu_Y - a \mu_X \mu_Y - b \mu_Y \\
+    &amp; = a \mathbb{E}(XY) - a \mu_X \mu_Y \\
+    &amp; = a \text{Cov}(X,Y)
+\end{aligned}
+\]</span></p>
+<hr />
+<h4 id="claim-2">Claim</h4>
+<p><span class="math display">\[ \text{Var}(X+Y) = \text{Var}(X) + 2
+\text{Cov}(X,Y) + \text{Var}(Y)\]</span></p>
+<p><strong>Proof.</strong> We have <span class="math display">\[
+\begin{aligned}
+\text{Var}(X+Y)
+    &amp; = \mathbb{E}\bigl( (X+Y)^2 \bigr) - \bigl(\mathbb{E}(X+Y)
+\bigr)^2 \\
+    &amp; = \mathbb{E}(X^2 + 2XY + Y^2) - (\mu_X + \mu_Y)^2 \\
+    &amp; = \mathbb{E}(X^2) + 2 \mathbb{E}(XY) + \mathbb{E}(Y^2) -
+\mu_X^2 - 2\mu_X \mu_Y - \mu_Y^2 \\
+    &amp; = \text{Var}(X) + 2 \text{Cov}(X,Y) + \text{Var}(Y)
+\end{aligned}
+\]</span></p>
+<p><strong>Important special case:</strong> If <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are independent, then <span
+class="math display">\[ \text{Var}(X+Y) = \text{Var}(X)+\text{Var}(Y)
+\]</span></p>
+<hr />
+<h3 id="correlation-between-two-rvs">Correlation between two RVs</h3>
+<p>The <strong>correlation</strong> between <span
+class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> is defined by <span
+class="math display">\[ \text{Corr}(X,Y) =
+\frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y} \]</span></p>
+<ul>
+<li>Shorthand notation: <span class="math inline">\(\rho_{X,Y}\)</span>
+or <span class="math inline">\(\rho\)</span>.</li>
+<li>Correlation is a <strong>normalization</strong> of covariance.</li>
+</ul>
+<hr />
+<h4 id="claim-3">Claim</h4>
+<p><span class="math display">\[ -1 \le \text{Corr}(X,Y) \le 1
+\]</span></p>
+<p><strong>Proof.</strong> Define <span class="math inline">\(U =
+\frac{X-\mu}{\sigma_X}\)</span> and <span class="math inline">\(V =
+\frac{Y-\mu_Y}{\sigma_Y}\)</span>. Then <span class="math display">\[
+\text{Corr}(X,Y) = \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y} =
+\text{Cov}\biggl( \frac{X-\mu_X}{\sigma_X}, \frac{Y-\mu_Y}{\sigma_Y}
+\biggr) = \text{Cov}(U,V) .\]</span></p>
+<p>Notice <span class="math inline">\(\mu_U = \mu_V = 0\)</span> and
+<span class="math inline">\(\mathbb{E}(U^2) = \mathbb{E}(V^2) =
+1\)</span>, by Cauchy-Schwarz inequality, <span class="math display">\[
+|\text{Cov}(U,V)| = |\mathbb{E}(UV) - \mu_U \mu_V| = |\mathbb{E}(UV)|
+\le \sqrt{\mathbb{E}(U^2)}\sqrt{\mathbb{E}(V^2)} =1\]</span> Combining
+the two above yields the claimed bounds.</p>
+<p><strong>Remark.</strong> <span class="math inline">\(\text{Corr}(X,Y)
+= 1\)</span> if and only if <span class="math inline">\(Y =
+aX+b\)</span> for some <span class="math inline">\(a&gt;0\)</span>.</p>
+<hr />
+<h3 id="chebyshevs-inequality">Chebyshev’s inequality</h3>
+<p>Let <span class="math inline">\(X\)</span> be any RV with expectation
+<span class="math inline">\(\mu\)</span> and variance <span
+class="math inline">\(\sigma^2\)</span>, and <span
+class="math inline">\(\epsilon &gt; 0\)</span> arbitrary. Then <span
+class="math display">\[ P( | X - \mu| &gt; \epsilon) \le \Bigl(
+\frac{\sigma}{\epsilon} \Bigr)^2 \]</span></p>
+<p><strong>Proof.</strong> <span class="math display">\[
+\begin{aligned}
+\sigma^2 &amp; = \sum_x (x-\mu)^2 p(x) \ge \sum_{\{x: |x-\mu| &gt;
+\epsilon\}} p(x) \\
+&amp; = \sum_{\{x:|x-\mu|&gt;\epsilon\}} \epsilon^2 p(x) = \epsilon^2
+\sum_{\{x:|x-\mu|&gt;\epsilon\}} p(x) = \epsilon^2 P(|X-\mu| &gt;
+\epsilon)
+\end{aligned}
+\]</span></p>
+<p><strong>Remark.</strong> Provides a fast (but often rough) estimate
+of the deviation <span class="math inline">\(|X - \mu|\)</span>.</p>
+<hr />
+<p><strong>Example.</strong> Suppose a RV <span
+class="math inline">\(X\)</span> has expectation 20 and standard
+deviation 2. Use the Chebyshev’s inequality to upper bound <span
+class="math inline">\(P(X&gt;30)\)</span>.</p>
+<p><strong>Solution.</strong> We have <span class="math display">\[
+P(X&gt;30) \le P(|X-20| &gt; 10) \le \Bigl( \frac{2}{20} \Bigr)^2 = 0.04
+\]</span></p>
+<hr />
+<h3 id="bernoulli-distribution">Bernoulli distribution</h3>
+<p>Let <span class="math inline">\(\theta \in (0,1)\)</span>. We say
+<span class="math inline">\(X \sim \text{Bernoulli}(\theta)\)</span> if
+its pmf is <span class="math display">\[ p(x) = \begin{cases} \theta,
+&amp; \text{if~} x = 1, \\ 1-\theta, &amp; \text{if~} x = 0. \end{cases}
+\]</span></p>
+<p>We find <span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp; = 1 \cdot \theta + 0 \cdot (1-\theta) = \theta \\
+    \mathbb{E}(X^2) &amp; = 1^2 \cdot \theta + 0^2 \cdot (1-\theta) =
+\theta \\
+    \text{Var}(X) &amp; = \mathbb{E}(X^2) - (\mathbb{E}(X))^2 = \theta -
+\theta^2 = \theta(1-\theta)
+\end{aligned}
+\]</span></p>
+<p><strong>Example.</strong> Tossing a coin with Head chance <span
+class="math inline">\(\theta\)</span>, with <span
+class="math inline">\(X=1\)</span> for Head and <span
+class="math inline">\(X=0\)</span> for Tail.</p>
+<hr />
+<h3 id="binomial-distribution">Binomial distribution</h3>
+<p>Toss a coin with Head chance <span class="math inline">\(\theta
+\in(0,1)\)</span> for <span class="math inline">\(n\)</span> times, and
+let <span class="math inline">\(X\)</span> be the number of Heads.</p>
+<p>We say <span class="math inline">\(X \sim
+\text{Binomial}(n,\theta)\)</span> with pmf <span
+class="math display">\[ p(x) = \binom{n}{x} \theta^x (1-\theta)^{n-x}
+\]</span> for <span class="math inline">\(x=0,1,\dots,n\)</span>.</p>
+<p><strong>Remarks.</strong> - We can think <span
+class="math inline">\(X = Y_1 + \dots + Y_n\)</span>, where <span
+class="math inline">\(Y_i \sim \text{Bernoulli}(\theta)\)</span> and
+<span class="math inline">\(Y_i\)</span>’s are independent. - If <span
+class="math inline">\(X \sim \text{Binomial}(n,\theta)\)</span>, then
+<span class="math inline">\((n - X) \sim
+\text{Binomial}(n,1-\theta)\)</span>.</p>
+<hr />
+<p>Recall Bernoulli<span class="math inline">\((\theta)\)</span> has
+expectation <span class="math inline">\(\theta\)</span> and variance
+<span class="math inline">\(\theta(1-\theta)\)</span>.</p>
+<p>Hence for <span class="math inline">\(X \sim
+\text{Binomial}(n,\theta)\)</span>, we have <span
+class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp;= \mathbb{E}\Bigl( \sum_{i=1}^{n} Y_i \Bigr) =
+\sum_{i=1}^{n} \mathbb{E}(Y_i) = n \theta \\
+    \text{Var}(X) &amp;= \text{Var}\Bigl( \sum_{i=1}^{n} Y_i \Bigr) =
+\sum_{i=1}^{n} \text{Var}(Y_i) = n \theta (1-\theta)\\
+\end{aligned}
+\]</span> where splitting the variance of <span
+class="math inline">\(\sum_{i=1}^{n} Y_i\)</span> is due to their
+independence.</p>
+<hr />
+<p><strong>Example.</strong> Roll a fair die for 5 times. Let <span
+class="math inline">\(X\)</span> be the number of times that 6 is
+rolled. Find <span class="math inline">\(\mathbb{E}(X)\)</span>, <span
+class="math inline">\(\text{Var}(X)\)</span>, and the probability of
+rolling 6 for more than once.</p>
+<p><strong>Solution.</strong> Notice <span class="math inline">\(X \sim
+\text{Binomial}(5,\frac{1}{6})\)</span>. We have <span
+class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) = n\theta = \frac{5}{6}, \qquad \text{Var}(X) = n
+\theta(1-\theta) = \frac{25}{36}.
+\end{aligned}
+\]</span> and <span class="math display">\[
+\begin{aligned}
+P(X &gt; 1)
+    &amp; = 1 - P(X=0) - P(X=0) \\
+    &amp; = 1 - \binom{n}{0} \theta^0 (1-\theta)^{n-0} - \binom{n}{1}
+\theta^1 (1-\theta)^{n-1} \\
+    &amp; = 1 -
+\binom{5}{0}\Bigl(\frac{1}{6}\Bigr)^0\Bigl(1-\frac{1}{6}\Bigr)^{5-0} -
+\binom{5}{1}\Bigl(\frac{1}{6}\Bigr)^1\Bigl(1-\frac{1}{6}\Bigr)^{5-1}\\
+    &amp; \approx 0.1962
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="geometric-distribution">Geometric distribution</h3>
+<p>Toss a coin with Head chance <span class="math inline">\(\theta
+\in(0,1)\)</span> until the first Head appears. Let <span
+class="math inline">\(X\)</span> be the number of tosses.</p>
+<p>We say <span class="math inline">\(X \sim
+\text{Geometric}(\theta)\)</span> if its pmf is <span
+class="math display">\[ p(x) = (1-\theta)^{x-1} \theta \]</span> for
+<span class="math inline">\(x=1,2,\dots\)</span></p>
+<p><strong>Remark.</strong> We get <span
+class="math inline">\(x-1\)</span> Tails and then a Head. Hence the pmf
+<span class="math inline">\(p\)</span> here.</p>
+<hr />
+<h3 id="some-useful-identities">Some useful identities</h3>
+<p>Let <span class="math inline">\(r \in (0,1)\)</span>. Then <span
+class="math display">\[
+\begin{aligned}
+\sum_{k=0}^{\infty} r^k &amp; = \frac{1}{1-r} \\
+    \sum_{k=1}^{\infty} k r^{k-1} &amp; = \frac{1}{(1-r)^2} \\
+    \sum_{k=2}^{\infty} k (k-1) r^{k-2} &amp; = \frac{2}{(1-r)^3}
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="proof.">Proof.</h3>
+<ol type="1">
+<li>Let <span class="math inline">\(S = \sum_{k=0}^{\infty}
+r_k\)</span>. Then <span class="math inline">\(S - rS = 1\)</span> and
+hence <span class="math inline">\(S = \frac{1}{1-r}\)</span>.</li>
+<li>Notice <span class="math display">\[ \sum_{k=1}^{\infty} k r^{k-1} =
+\sum_{k=1}^{\infty} \frac{d}{dr} (r^{k}) = \frac{d}{dr}
+\Bigl(\sum_{k=1}^{\infty} r^{k} \Bigr) = \frac{d}{dr}
+\Bigl(\frac{r}{1-r} \Bigr) = \frac{1}{(1-r)^2} \]</span></li>
+<li>Similarly, <span class="math display">\[ \sum_{k=2}^{\infty} k(k-1)
+r^{k-2} = \sum_{k=2}^{\infty} \frac{d^2}{dr^2} (r^{k}) =
+\frac{d^2}{dr^2} \Bigl(\sum_{k=2}^{\infty} r^{k} \Bigr) =
+\frac{d^2}{dr^2} \Bigl(\frac{r^2}{1-r} \Bigr) = \frac{2}{(1-r)^3}
+\]</span></li>
+</ol>
+<hr />
+<p>Let <span class="math inline">\(r = 1-\theta\)</span> and <span
+class="math inline">\(k = x\)</span>, we get <span
+class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp; = \sum_{x=1}^{\infty} x p(x) = \sum_{x=1}^{\infty} x
+(1-\theta)^{x-1} \theta = \frac{\theta}{(1 - (1-\theta))^2} =
+\frac{1}{\theta} \\
+\mathbb{E}(X^2 - X) &amp; =  \sum_{k=2}^{\infty}
+(x^2-x)(1-\theta)^{x-1}\theta =
+\frac{2(1-\theta)\theta}{(1-(1-\theta))^3} =
+\frac{2(1-\theta)}{\theta^2}\\
+    \text{Var}(X) &amp; = \mathbb{E}(X^2 - X) + \mathbb{E}(X) -
+(\mathbb{E}(X))^2 = \frac{2(1-\theta)}{\theta^2} + \frac{1}{\theta} -
+\frac{1}{\theta^2} = \frac{1-\theta}{\theta^2}
+\end{aligned}
+\]</span></p>
+<hr />
+<p><strong>Example.</strong> Roll a fair die until the first 3 appears.
+Let <span class="math inline">\(X\)</span> be the number of rolls. Find
+the pmf <span class="math inline">\(p\)</span>, <span
+class="math inline">\(\mathbb{E}(X)\)</span>, and <span
+class="math inline">\(\text{Var}(X)\)</span>.</p>
+<p><strong>Solution.</strong> Notice <span class="math inline">\(X \sim
+\text{Geometric}(\frac{1}{6})\)</span>. We have its pmf <span
+class="math display">\[
+\begin{aligned}
+p(x) = (1-\theta)^{x-1}\theta = \Bigl(\frac{5}{6}\Bigr)^{x-1}\frac{1}{6}
+\end{aligned}
+\]</span> for <span class="math inline">\(x = 1,2,\dots\)</span>
+Moreover <span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp; = \frac{1}{\theta} = \frac{1}{\frac{1}{6}}= 6 \\
+    \text{Var}(X)
+    &amp; = \frac{1-\theta}{\theta^2} =
+\frac{1-\frac{1}{6}}{\bigl(\frac{1}{6}\bigr)^2} = 30\\
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="negative-binomial-distribution">Negative Binomial
+distribution</h3>
+<p>Toss a coin with Head chance <span class="math inline">\(\theta
+\in(0,1)\)</span> until the <span class="math inline">\(k\)</span>-th
+Head appears. Let <span class="math inline">\(X\)</span> be the number
+of tosses.</p>
+<p>We say <span class="math inline">\(X \sim
+\text{NB}(k,\theta)\)</span> if it has pmf <span class="math display">\[
+p(x) = \binom{x-1}{k-1}(1-\theta)^{x-k} \theta^k \]</span> for <span
+class="math inline">\(x=k,k+1,\dots\)</span></p>
+<p><strong>Remark.</strong> We get <span
+class="math inline">\((k-1)\)</span> Heads and <span
+class="math inline">\((x-k)\)</span> Tails in the first <span
+class="math inline">\((x-1)\)</span> tosses, and then a Head in the
+<span class="math inline">\(x\)</span>-th toss. Hence the pmf <span
+class="math inline">\(p\)</span> here.</p>
+<hr />
+<p><strong>Remark.</strong> We can think <span class="math inline">\(X =
+Y_1 + \dots + Y_k\)</span>, where <span class="math inline">\(Y_i \sim
+\text{Geometric}(\theta)\)</span> and <span
+class="math inline">\(Y_i\)</span>’s are independent.</p>
+<p>Recall <span class="math inline">\(\text{Geometric}(\theta)\)</span>
+has expectation <span class="math inline">\(\frac{1}{\theta}\)</span>
+and variance <span
+class="math inline">\(\frac{1-\theta}{\theta^2}\)</span>.</p>
+<p>Hence for <span class="math inline">\(X \sim
+\text{NB}(k,\theta)\)</span>, we have <span class="math display">\[
+\begin{aligned}
+\mathbb{E}(X) &amp;= \mathbb{E}\Bigl( \sum_{i=1}^{k} Y_i \Bigr) =
+\sum_{i=1}^{k} \mathbb{E}(Y_i) = \frac{k}{\theta} \\
+    \text{Var}(X) &amp;= \text{Var}\Bigl( \sum_{i=1}^{k} Y_i \Bigr) =
+\sum_{i=1}^{k} \text{Var}(Y_i) = \frac{k(1-\theta)}{\theta^2}
+\end{aligned}
+\]</span> where splitting the variance of <span
+class="math inline">\(\sum_{i=1}^{n} Y_i\)</span> is due to their
+independence.</p>
+<hr />
+<p><strong>Example.</strong> A certain electronic component has 5%
+chance to be defective. Let <span class="math inline">\(X\)</span> be
+the number of components we check until 12 non-defective ones are found.
+Find the probabilty that <span class="math inline">\(X &gt;
+15\)</span>.</p>
+<p><strong>Solution.</strong> Notice <span class="math inline">\(X \sim
+\text{NB}(12,0.95)\)</span>. We have its pmf <span
+class="math display">\[
+\begin{aligned}
+p(x) = \binom{x-1}{k-1}(1-\theta)^{x-k} \theta^{12} =
+\binom{x-1}{11}(0.05)^{x-12} (0.95)^{12}
+\end{aligned}
+\]</span> for <span class="math inline">\(x = 12,13,\dots\)</span> Hence
+<span class="math display">\[
+\begin{aligned}
+P(X &gt; 15) = 1 - P(X \le 15) = 1 - \sum_{x=12}^{15}p(x)
+\end{aligned}
+\]</span></p>
+<hr />
+<h3 id="poisson-distribution">Poisson distribution</h3>
+<p>Fix a time period during which a certain event independently occurs
+<span class="math inline">\(\lambda&gt;0\)</span> times on average. Let
+<span class="math inline">\(X\)</span> be the number of actual
+occurances.</p>
+<p>We say <span class="math inline">\(X \sim
+\text{Poisson}(\lambda)\)</span> it has pmf <span
+class="math display">\[ p(x) = \frac{e^{-\lambda} \lambda^x}{x!}
+\]</span> for <span class="math inline">\(x=0,1,\dots\)</span></p>
+<p><strong>Remark.</strong> The unity of <span
+class="math inline">\(p\)</span> is due to the Taylor expansion <span
+class="math display">\[e^{\lambda} = \sum_{k=0}^{\infty}
+\frac{\lambda^k}{k!}\]</span></p>
+<hr />
+<p>We have <span class="math display">\[ \mathbb{E}(X) =
+\sum_{x=0}^{\infty} x p(x) = \sum_{x=0}^{\infty} x \cdot
+\frac{e^{-\lambda}\lambda^x}{x!} = \lambda e^{-\lambda}
+\sum_{x=1}^{\infty} \frac{\lambda^{x-1}}{(x-1)!} = \lambda \]</span> and
+<span class="math display">\[
+\begin{aligned}
+\text{Var}(X) &amp; = \mathbb{E}(X^2 - X) + \mathbb{E}(X) -
+(\mathbb{E}(X))^2 \\
+    &amp; = \sum_{x=0}^{\infty} x(x-1) \cdot
+\frac{e^{-\lambda}\lambda^{x}}{x!} + \lambda - \lambda^2 \\
+    &amp; = \lambda^2 e^{-\lambda} \sum_{x=2}^{\infty}
+\frac{\lambda^{x-2}}{(x-2)!} + \lambda - \lambda^2 \\
+    &amp; = \lambda
+\end{aligned}
+\]</span></p>
+<hr />
+<p><strong>Example.</strong> An Internet service provider opens 10 new
+accounts per day on average. Let <span class="math inline">\(X\)</span>
+be the number of new accounts opened in 2 days. Find <span
+class="math inline">\(P(X &gt; 16)\)</span>.</p>
+<p><strong>Solution.</strong> Notice <span class="math inline">\(X \sim
+\text{Poisson}(20)\)</span>. We have its pmf <span
+class="math display">\[ p(x) = \frac{e^{-\lambda} \lambda^x}{x!} =
+\frac{e^{-20} 20^x}{x!} \]</span> for <span class="math inline">\(x =
+0,1,2,\dots\)</span> Hence <span class="math display">\[
+\begin{aligned}
+P(X &gt; 16) = 1 - P(X \le 16) = 1 - \sum_{x=0}^{16}p(x)
+\end{aligned}
+\]</span></p>
+<hr />
+<p><strong>Claim.</strong> Let <span
+class="math inline">\(\lambda&gt;0\)</span> and <span
+class="math inline">\(n\)</span> be very large, and <span
+class="math inline">\(\theta=\frac{\lambda}{n} \in (0,1)\)</span> which
+is close to <span class="math inline">\(0\)</span>, then <span
+class="math display">\[ \text{Binomial}(n,\theta) \approx
+\text{Poisson}(n\theta) \]</span> in the sense that for any <span
+class="math inline">\(x = 0,1,\dots,n\)</span> there is <span
+class="math display">\[ \binom{n}{x} \theta^{x} (1-\theta)^{n-x} \to
+\frac{e^{-\lambda}\lambda^x}{x!} \]</span> as <span
+class="math inline">\(n \to \infty\)</span> and <span
+class="math inline">\(\theta = \frac{\lambda}{n}\)</span>.</p>
+<hr />
+<p>This claim relates the “occurance of rare events” nature of Poisson
+distribution.</p>
+<p><strong>Intuition:</strong> Consider a unit time period. Let <span
+class="math inline">\(X \sim \text{Poisson}(n\theta)\)</span>. Then
+<span class="math inline">\(X\)</span> is the number of event
+occurrances during this period, with expectation <span
+class="math inline">\(n\theta\)</span>.</p>
+<p>On the other hand, partition the period to <span
+class="math inline">\(n\)</span> equal intervals, and assume a chance
+<span class="math inline">\(\theta\)</span> that the rare event occurs
+in each interval. So the total number of events also follow <span
+class="math inline">\(\text{Binomial}(n,\theta)\)</span>. This total
+number is just <span class="math inline">\(X\)</span>!</p>
+<p><strong>Remark.</strong></p>
+<ul>
+<li>Requires <span class="math inline">\(\theta\)</span> close to <span
+class="math inline">\(0\)</span>, and <span
+class="math inline">\(n\)</span> very large.</li>
+<li>If <span class="math inline">\(\theta\)</span> close to <span
+class="math inline">\(1\)</span> and <span
+class="math inline">\(n\)</span> very large, then <span
+class="math inline">\(\text{Binomial}(n,1-\theta) \approx
+\text{Poisson}(n(1-\theta))\)</span>.</li>
+</ul>
+<hr />
+<h3 id="summary-of-discrete-distributions">Summary of discrete
+distributions:</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Distribution</th>
+<th style="text-align: center;"><span class="math inline">\(x\)</span>
+values</th>
+<th style="text-align: center;">pmf <span
+class="math inline">\(p(x)\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(\mathbb{E}(X)\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(\text{Var}(X)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Bernoulli}(\theta)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0,
+1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\theta^x(1-\theta)^{1-x}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\theta\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\theta(1-\theta)\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Binomial}(n,\theta)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0, 1,\dots,
+n\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\binom{n}{x}\theta^{x}(1-\theta)^{n-x}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(n\theta\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(n\theta(1-\theta)\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Geometric}(\theta)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1,
+2,\dots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\((1-\theta)^{x-1}\theta\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{\theta}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1-\theta}{\theta^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{NB}(k,\theta)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(k,k+1,\dots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\binom{x-1}{k-1}(1-\theta)^{x-k}\theta^k\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{k}{\theta}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{k\theta(1-\theta)}{\theta^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\text{Poisson}(\lambda)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0,1,\dots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{e^{-\lambda}\lambda^x}{x!}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\lambda\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\lambda\)</span></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
