@@ -3,40 +3,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      
-        <script type="text/javascript">
-          window.MathJax = ({"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"options":{"enableEnrichment":false},"loader":{}});
-(function () {
-  var cfg = window.MathJax;
-  cfg.startup = cfg.startup || {};
-  // Capture any user-supplied ready hook now; MathJax replaces window.MathJax
-  // with its live API during startup, so inside the hook we must reach for the
-  // *current* window.MathJax.startup (which has defaultReady/document), not the
-  // captured config object.
-  var userReady = cfg.startup.ready;
-  cfg.startup.ready = function () {
-    var startup = window.MathJax.startup;
-    if (typeof userReady === 'function') {
-      userReady();
-    } else {
-      startup.defaultReady();
-    }
-    var doc = startup.document;
-    var wanted =
-      (window.MathJax.config && window.MathJax.config.options) || {};
-    if (doc && doc.options) {
-      var keys = ["enableEnrichment","enableSpeech","enableBraille","enableComplexity","enableExplorer","enableAssistiveMml","enableMenu"];
-      for (var i = 0; i < keys.length; i++) {
-        if (Object.prototype.hasOwnProperty.call(wanted, keys[i])) {
-          doc.options[keys[i]] = wanted[keys[i]];
-        }
-      }
-    }
-  };
-})();
-        </script>
-        <script type="text/javascript" defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-        
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css">
       
       
       
@@ -184,10 +151,6 @@
 <li>
 <p>Complete course policy is in <a href="./math3020_syllabus_2026f.pdf">syllabus</a>.</p>
 </li>
-</ul>
-<h3 id="lecture-zoom-recordings">Lecture Zoom Recordings </h3>
-<ul>
-<li>Lecture 1 (8/25): <a href="https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgsu-edu.zoom.us%2Frec%2Fshare%2FyN0EnjZI0whHagEUgeXfqSkOhxB1ywkiRZOG8Uuk3dm0kkhsLlERAIEn-LgKTJTU.tjqPhcVygMEhPGdL&amp;data=05%7C02%7Cxye%40gsu.edu%7C45884a71964e43c7ed9408df02e07ef4%7C515ad73d8d5e4169895c9789dc742a70%7C0%7C0%7C639232835358984313%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&amp;sdata=gwjrwOd4PonmbH4s2Hg89W0ZrgEvF9BYwKAVK4OgE%2Bg%3D&amp;reserved=0">link</a> (Passcode: S#0qx0jc)</li>
 </ul>
 
       </div>
